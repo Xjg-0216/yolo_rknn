@@ -11,7 +11,9 @@
 | yolov5             | YOLOv5(目标检测)                 |
 | yolov5_seg         | YOLOv5(实例分割)                 |
 | yolov8             | YOLOv8                 |
-| garbage_detection            | 垃圾检测和识别               |
+| yolov10            | YOLOv10目标检测                 |
+| garbage_detection  | 垃圾检测和识别               |
+
 
 # 文件说明
 

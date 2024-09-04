@@ -3,7 +3,7 @@ import sys
 import numpy as np
 from rknn.api import RKNN
 
-DATASET_PATH = '../dataset/coco_subset_20.txt'
+DATASET_PATH = '../../datasets/COCO/coco_subset_20.txt'
 # 默认开启量化
 DEFAULT_QUANT = True
 
