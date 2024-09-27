@@ -39,8 +39,8 @@ add_executable(yolov10_image_demo
 )
 
 target_link_libraries(yolov10_image_demo
- fileutils
  imageutils
+ fileutils
  imagedrawing
  ${LIBRKNNRT}
  dl
@@ -54,8 +54,8 @@ add_executable(yolov10_videocapture_demo
 )
 
 target_link_libraries(yolov10_videocapture_demo
- fileutils
  imageutils
+ fileutils
  ${OpenCV_LIBS}
  ${LIBRKNNRT}
  dl

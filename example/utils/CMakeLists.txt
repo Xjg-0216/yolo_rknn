@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 
 project(rknn_model_zoo_utils)
 
@@ -16,6 +16,10 @@ target_include_directories(imagedrawing PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+if(DISABLE_RGA AND NOT (TARGET_SOC STREQUAL "rv1106" OR TARGET_SOC STREQUAL "rv1103" OR TARGET_SOC STREQUAL "rv1103b"))
+    add_definitions(-DDISABLE_RGA)
+endif ()
+
 # only RGA on rv1106 and rk3588 support handle
 if (TARGET_SOC STREQUAL "rv1106" OR TARGET_SOC STREQUAL "rk3588")
     add_definitions(-DLIBRGA_IM2D_HANDLE)
@@ -29,7 +33,6 @@ target_include_directories(imageutils PUBLIC
 )
 
 target_link_libraries(imageutils
-    fileutils
     ${LIBJPEG}
     ${LIBRGA}
 )

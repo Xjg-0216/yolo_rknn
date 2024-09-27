@@ -24,10 +24,10 @@
 static void dump_tensor_attr(rknn_tensor_attr *attr)
 {
     printf("  index=%d, name=%s, n_dims=%d, dims=[%d, %d, %d, %d], n_elems=%d, size=%d, fmt=%s, type=%s, qnt_type=%s, "
-           "zp=%d, scale=%f\n",
+           "zp=%d, scale=%f, ,size_with_stride=%d, w_stride=%d\n",
            attr->index, attr->name, attr->n_dims, attr->dims[0], attr->dims[1], attr->dims[2], attr->dims[3],
            attr->n_elems, attr->size, get_format_string(attr->fmt), get_type_string(attr->type),
-           get_qnt_type_string(attr->qnt_type), attr->zp, attr->scale);
+           get_qnt_type_string(attr->qnt_type), attr->zp, attr->scale, attr->size_with_stride, attr->w_stride);
 }
 
 static unsigned char* load_model(const char* filename, int* model_size)
@@ -286,17 +286,6 @@ out:
     return ret;
 }
 
-int get_type_size(rknn_tensor_type type){
-    switch (type)
-    {
-    case RKNN_TENSOR_FLOAT32: return 4;
-    case RKNN_TENSOR_FLOAT16: return 2;
-    case RKNN_TENSOR_UINT8: return 1;
-    case RKNN_TENSOR_INT8: return 1;
-    default: printf("ERROR: not support tensor type %s", get_type_string(type)); return -1;
-    }
-}
-
 int release_yolov5_zero_copy_model(rknn_app_context_t *app_ctx)
 {
     // Destroy rknn memory
@@ -421,7 +410,8 @@ int init_yolov5_zero_copy_model(const char *model_path, rknn_app_context_t *app_
     }
     else
     {
-        app_ctx->is_quant = false;
+        printf("please use QUANT INT8 model. \n");
+        return -1;
     }
 
     app_ctx->io_num = io_num;
@@ -457,7 +447,7 @@ int init_yolov5_zero_copy_model(const char *model_path, rknn_app_context_t *app_
 
     // Create output tensor memory
     for (uint32_t i = 0; i < io_num.n_output; ++i) {
-        int output_size = output_attrs[i].n_elems * get_type_size(app_ctx->output_attrs[i].type);
+        int output_size = output_attrs[i].n_elems * sizeof(float);
         app_ctx->output_mems[i] = rknn_create_mem(app_ctx->rknn_ctx, output_size);
     }
 
@@ -470,6 +460,7 @@ int init_yolov5_zero_copy_model(const char *model_path, rknn_app_context_t *app_
 
     // Set output tensor memory
     for (uint32_t i = 0; i < app_ctx->io_num.n_output; ++i) {
+        output_attrs[i].type = RKNN_TENSOR_FLOAT32;
         ret = rknn_set_io_mem(app_ctx->rknn_ctx, app_ctx->output_mems[i], &app_ctx->output_attrs[i]);
         if (ret < 0) {
             printf("rknn_set_io_mem fail! ret=%d\n", ret);
@@ -493,6 +484,9 @@ int inference_yolov5_zero_copy_model(rknn_app_context_t *app_ctx, image_buffer_t
     {
         return -1;
     }
+
+    int width  = app_ctx->input_attrs[0].dims[2];
+    int stride = app_ctx->input_attrs[0].w_stride;
 
     rknn_output outputs[app_ctx->io_num.n_output];
     memset(outputs, 0, sizeof(outputs));
@@ -534,7 +528,23 @@ int inference_yolov5_zero_copy_model(rknn_app_context_t *app_ctx, image_buffer_t
     }
 
     // Copy input data to input tensor memory
-    memcpy(app_ctx->input_mems[0]->virt_addr, dst_img.virt_addr, app_ctx->input_attrs[0].size);
+    if (width == stride) {
+        memcpy(app_ctx->input_mems[0]->virt_addr, dst_img.virt_addr, width * app_ctx->input_attrs[0].dims[1] * app_ctx->input_attrs[0].dims[3]);
+    } else {
+        int height  = app_ctx->input_attrs[0].dims[1];
+        int channel = app_ctx->input_attrs[0].dims[3];
+        // copy from src to dst with stride
+        uint8_t* src_ptr = dst_img.virt_addr;
+        uint8_t* dst_ptr = (uint8_t*)app_ctx->input_mems[0]->virt_addr;
+        // width-channel elements
+        int src_wc_elems = width * channel;
+        int dst_wc_elems = stride * channel;
+        for (int h = 0; h < height; ++h) {
+        memcpy(dst_ptr, src_ptr, src_wc_elems);
+        src_ptr += src_wc_elems;
+        dst_ptr += dst_wc_elems;
+        }
+    }
 
     // Run
     printf("rknn_run\n");

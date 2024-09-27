@@ -1,21 +1,41 @@
-import os
 import sys
-import numpy as np
 from rknn.api import RKNN
 
-# 导出rknn模型路径
-RKNN_MODEL = './model/yolov5s.rknn'
-
-# ONNX模型路径
-MODEL_PATH = './yolov5s.onnx'
-
-DATASET_PATH = './dataset.txt'
+DATASET_PATH = '../datasets/COCO/coco_subset_20.txt'
+DEFAULT_RKNN_PATH = './model/yolov5.rknn'
 DEFAULT_QUANT = True
 
-# 默认是rk3588平台
-platform = "rk3588"
+def parse_arg():
+    if len(sys.argv) < 3:
+        print("Usage: python3 {} onnx_model_path [platform] [dtype(optional)] [output_rknn_path(optional)]".format(sys.argv[0]))
+        print("       platform choose from [rk3562,rk3566,rk3568,rk3576,rk3588,rv1103,rv1106,rk1808,rv1109,rv1126]")
+        print("       dtype choose from [i8, fp] for [rk3562,rk3566,rk3568,rk3576,rk3588,rv1103,rv1106]")
+        print("       dtype choose from [u8, fp] for [rk1808,rv1109,rv1126]")
+        exit(1)
+
+    model_path = sys.argv[1]
+    platform = sys.argv[2]
+
+    do_quant = DEFAULT_QUANT
+    if len(sys.argv) > 3:
+        model_type = sys.argv[3]
+        if model_type not in ['i8', 'u8', 'fp']:
+            print("ERROR: Invalid model type: {}".format(model_type))
+            exit(1)
+        elif model_type in ['i8', 'u8']:
+            do_quant = True
+        else:
+            do_quant = False
+
+    if len(sys.argv) > 4:
+        output_path = sys.argv[4]
+    else:
+        output_path = DEFAULT_RKNN_PATH
+
+    return model_path, platform, do_quant, output_path
 
 if __name__ == '__main__':
+    model_path, platform, do_quant, output_path = parse_arg()
 
     # Create RKNN object
     rknn = RKNN(verbose=False)
@@ -28,8 +48,7 @@ if __name__ == '__main__':
 
     # Load model
     print('--> Loading model')
-    ret = rknn.load_onnx(model=MODEL_PATH)
-    #ret = rknn.load_pytorch(model=MODEL_PATH, input_size_list=[[1, 3, 640, 640]])
+    ret = rknn.load_onnx(model=model_path)
     if ret != 0:
         print('Load model failed!')
         exit(ret)
@@ -37,7 +56,7 @@ if __name__ == '__main__':
 
     # Build model
     print('--> Building model')
-    ret = rknn.build(do_quantization=DEFAULT_QUANT, dataset=DATASET_PATH)
+    ret = rknn.build(do_quantization=do_quant, dataset=DATASET_PATH)
     if ret != 0:
         print('Build model failed!')
         exit(ret)
@@ -45,19 +64,11 @@ if __name__ == '__main__':
 
     # Export rknn model
     print('--> Export rknn model')
-    ret = rknn.export_rknn(RKNN_MODEL)
+    ret = rknn.export_rknn(output_path)
     if ret != 0:
         print('Export rknn model failed!')
         exit(ret)
     print('done')
-
-    # 精度分析,,输出目录./snapshot
-    #print('--> Accuracy analysis')
-    #ret = rknn.accuracy_analysis(inputs=['./subset/000000052891.jpg'])
-    #if ret != 0:
-    #    print('Accuracy analysis failed!')
-    #    exit(ret)
-    #print('done')
 
     # Release
     rknn.release()

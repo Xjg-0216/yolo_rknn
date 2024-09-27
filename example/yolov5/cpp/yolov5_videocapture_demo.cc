@@ -20,13 +20,31 @@
 #include <sys/time.h>
 
 #include "yolov5.h"
+#include "easy_timer.h"
+
 #include <opencv2/opencv.hpp>
 
-/*-------------------------------------------
-                  Functions
--------------------------------------------*/
-
-double __get_us(struct timeval t) { return (t.tv_sec * 1000000 + t.tv_usec); }
+static const unsigned char colors[19][3] = {
+    {54, 67, 244},
+    {99, 30, 233},
+    {176, 39, 156},
+    {183, 58, 103},
+    {181, 81, 63},
+    {243, 150, 33},
+    {244, 169, 3},
+    {212, 188, 0},
+    {136, 150, 0},
+    {80, 175, 76},
+    {74, 195, 139},
+    {57, 220, 205},
+    {59, 235, 255},
+    {7, 193, 255},
+    {0, 152, 255},
+    {34, 87, 255},
+    {72, 85, 121},
+    {158, 158, 158},
+    {139, 125, 96}
+};
 
 /*-------------------------------------------
                   Main Function
@@ -45,6 +63,7 @@ int main(int argc, char **argv)
     const char *device_name = argv[2];
 
     int ret;
+    TIMER timer;
     cv::Mat image, frame;
     struct timeval start_time, stop_time;
     rknn_app_context_t rknn_app_ctx;
@@ -55,7 +74,7 @@ int main(int argc, char **argv)
     memset(&src_image, 0, sizeof(image_buffer_t));
 
     cv::VideoCapture cap;
-    if (strlen(device_name)==1 && isdigit(device_name[0])) {
+    if (isdigit(device_name[0])) {
         // 打开摄像头
         int camera_id = atoi(argv[2]);
         cap.open(camera_id);
@@ -63,10 +82,11 @@ int main(int argc, char **argv)
             printf("Error: Could not open camera.\n");
             return -1;
         }
+        // cap.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
         // cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);//宽度
         // cap.set(cv::CAP_PROP_FRAME_HEIGHT, 640);//高度
     } else {
-        // 打开视频文件
+        // 打开视频文件等
         cap.open(argv[2]);
         if (!cap.isOpened()) {  
             printf("Error: Could not open video file.\n");
@@ -98,11 +118,13 @@ int main(int argc, char **argv)
         }  
 
         cv::cvtColor(frame, image, cv::COLOR_BGR2RGB);
+        // image.convertTo(image, CV_8UC3);
         src_image.width  = image.cols;
         src_image.height = image.rows;
         src_image.format = IMAGE_FORMAT_RGB888;
         src_image.virt_addr = (unsigned char*)image.data;
 
+        timer.tik();
 #ifndef ENABLE_ZERO_COPY
         ret = inference_yolov5_model(&rknn_app_ctx, &src_image, &od_results);
 #else
@@ -113,32 +135,41 @@ int main(int argc, char **argv)
             printf("inference yolov5_model fail! ret=%d\n", ret);
             goto out;
         }
+        timer.tok();
+        timer.print_time("inference_yolov5_model");
 
-        // draw boxes
         char text[256];
+        int color_index = 0;
         for (int i = 0; i < od_results.count; i++)
         {
+            const unsigned char* color = colors[color_index % 19];
+            cv::Scalar cc(color[0], color[1], color[2]);
+            color_index++;
+
             object_detect_result *det_result = &(od_results.results[i]);
             printf("%s @ (%d %d %d %d) %.3f\n", coco_cls_to_name(det_result->cls_id),
                 det_result->box.left, det_result->box.top,
                 det_result->box.right, det_result->box.bottom,
                 det_result->prop);
-            int x1 = det_result->box.left;
-            int y1 = det_result->box.top;
-            int x2 = det_result->box.right;
-            int y2 = det_result->box.bottom;
-
-            rectangle(frame, cv::Point(x1, y1), cv::Point(x2, y2), cv::Scalar(255, 0, 0, 255), 2);
             sprintf(text, "%s %.1f%%", coco_cls_to_name(det_result->cls_id), det_result->prop * 100);
-            putText(frame, text, cv::Point(x1, y1 - 6), cv::FONT_HERSHEY_DUPLEX, 0.7, cv::Scalar(0,0,255), 1, cv::LINE_AA);
-        }
 
-		// 计算FPS
-        gettimeofday(&stop_time, NULL);
-        float t = (__get_us(stop_time) - __get_us(start_time))/1000;
-        printf("Infer time(ms): %f ms\n", t);
-		putText(frame, cv::format("FPS: %.2f", 1.0 / (t / 1000)), cv::Point(10, 30), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(255, 0, 0), 2, 8);
-		cv::imshow("YOLOv5 C++ Demo", frame);
+            cv::rectangle(frame, cv::Rect(cv::Point(det_result->box.left, det_result->box.top), 
+                            cv::Point(det_result->box.right, det_result->box.bottom)), cc, 2);
+
+            int baseLine = 0;
+            cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
+
+            int x = det_result->box.left;
+            int y = det_result->box.top - label_size.height - baseLine;
+            if (y < 0)
+                y = 0;
+            if (x + label_size.width > frame.cols)
+                x = frame.cols - label_size.width;
+
+            cv::rectangle(frame, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)),cc,-1);
+            cv::putText(frame, text, cv::Point(x, y + label_size.height),cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255));
+        }
+		cv::imshow("YOLOv5 Videocapture Demo", frame);
 
 		char c = cv::waitKey(1);
 		if (c == 27) { // ESC

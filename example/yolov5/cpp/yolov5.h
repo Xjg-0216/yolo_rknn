@@ -17,6 +17,7 @@
 #define _RKNN_DEMO_YOLOV5_H_
 
 #include "rknn_api.h"
+#include "common.h"
 
 typedef struct {
     rknn_context rknn_ctx;
@@ -41,8 +42,6 @@ int init_yolov5_model(const char* model_path, rknn_app_context_t* app_ctx);
 int release_yolov5_model(rknn_app_context_t* app_ctx);
 
 int inference_yolov5_model(rknn_app_context_t* app_ctx, image_buffer_t* img, object_detect_result_list* od_results);
-
-int get_type_size(rknn_tensor_type type);
 
 int release_yolov5_zero_copy_model(rknn_app_context_t *app_ctx);
 
