@@ -12,8 +12,8 @@ if (ENABLE_ASAN)
 endif ()
 
 # 从系统查找opencv
-find_package(OpenCV REQUIRED)
 # set(OpenCV_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/opencv/opencv-linux-aarch64/share/OpenCV)
+find_package(OpenCV REQUIRED)
 
 # RGA2 only support under 4G memory
 if (ENABLE_DMA32 STREQUAL "TRUE")

@@ -24,8 +24,12 @@ typedef struct {
     rknn_tensor_attr* input_attrs;
     rknn_tensor_attr* output_attrs;
 
-    rknn_tensor_mem **input_mems;
-    rknn_tensor_mem **output_mems;
+#ifdef ENABLE_ZERO_COPY
+    rknn_tensor_attr* input_native_attrs;
+    rknn_tensor_attr* output_native_attrs;
+    rknn_tensor_mem* input_mems[1];
+    rknn_tensor_mem* output_mems[9];
+#endif
 
     int model_channel;
     int model_width;
@@ -41,10 +45,10 @@ int release_yolov10_model(rknn_app_context_t* app_ctx);
 
 int inference_yolov10_model(rknn_app_context_t* app_ctx, image_buffer_t* img, object_detect_result_list* od_results);
 
+#ifdef ENABLE_ZERO_COPY
 int release_yolov10_zero_copy_model(rknn_app_context_t *app_ctx);
-
 int init_yolov10_zero_copy_model(const char *model_path, rknn_app_context_t *app_ctx);
-
 int inference_yolov10_zero_copy_model(rknn_app_context_t *app_ctx, image_buffer_t *img, object_detect_result_list *od_results);
+#endif
 
 #endif //_RKNN_DEMO_YOLOV10_H_

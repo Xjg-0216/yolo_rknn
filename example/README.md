@@ -7,12 +7,15 @@
 | ppocrv4            | PP-ORCv4                        | 
 | ppseg              | PP-LitetSeg                     |
 | ppyoloe            | PP-YOLOE                        |
-| yolox              | YoloX(目标检测)                  |
+| RT-DETR            | RT-DETR                         |
+| yolox              | YoloX                           |
 | yolov5             | YOLOv5(目标检测)                 |
 | yolov5_seg         | YOLOv5(实例分割)                 |
+| yolov5face         | YOLOv5Face(人脸检测)             |
 | yolov8             | YOLOv8                 |
 | yolov8-obb         | YOLOv8旋转目标检测                |
-| yolov10            | YOLOv10目标检测                 |
+| yolov10            | YOLOv10                     |
+| yolo11             | YOLOv11                        |
 | garbage_detection  | 垃圾检测和识别               |
 
 
@@ -26,3 +29,7 @@ scaling_frequency.sh 是系统CPU，DDR，NPU频率修改脚本，例如：
 # "  -h:  Help"
 sudo bash scaling_frequency.sh -c rk3568
 ```
+
+# 问题反馈
+
+如果有任何问题请联系淘宝野火官方旗舰店技术支持反馈。

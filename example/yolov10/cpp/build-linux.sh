@@ -3,7 +3,7 @@
 set -e
 
 echo "$0 $@"
-while getopts ":t:dz" opt; do
+while getopts ":t:b:dzmr" opt; do
   case $opt in
     t)
       TARGET_SOC=$OPTARG
@@ -11,6 +11,16 @@ while getopts ":t:dz" opt; do
     d)
       ENABLE_DMA32=ON
       export ENABLE_DMA32=TRUE
+      ;;
+    r)
+      DISABLE_RGA=ON
+      ;;
+    b)
+      BUILD_TYPE=$OPTARG
+      ;;
+    m)
+      ENABLE_ASAN=ON
+      export ENABLE_ASAN=TRUE
       ;;
     z)
       ENABLE_ZERO_COPY=ON
@@ -32,7 +42,11 @@ if [ -z ${TARGET_SOC} ] ; then
   echo "    -t : target (rk356x/rk3588/rk3576)"
   echo "    -d : enable dma32"
   echo "    -z : enable zero copy api"
+  echo "    -r : disable rga, use cpu resize image"
+  echo "    -b : build_type(Debug/Release)"
+  echo "    -m : enable address sanitizer, build_type need set to Debug"
   echo "such as: $0 -t rk3588 "
+  echo "such as: $0 -t rk3588 -b Debug -m -r "
   echo ""
   exit -1
 fi
@@ -71,6 +85,16 @@ if [[ -z ${ENABLE_ZERO_COPY} ]];then
     ENABLE_ZERO_COPY=OFF
 fi
 
+# Debug / Release
+if [[ -z ${BUILD_TYPE} ]];then
+    BUILD_TYPE=Release
+fi
+
+# Build with Address Sanitizer for memory check, BUILD_TYPE need set to Debug
+if [[ -z ${ENABLE_ASAN} ]];then
+    ENABLE_ASAN=OFF
+fi
+
 GCC_COMPILER=aarch64-linux-gnu
 export CC=${GCC_COMPILER}-gcc
 export CXX=${GCC_COMPILER}-g++
@@ -85,6 +109,8 @@ echo "INSTALL_DIR=${INSTALL_DIR}"
 echo "BUILD_DIR=${BUILD_DIR}"
 echo "ENABLE_DMA32=${ENABLE_DMA32}"
 echo "ENABLE_ZERO_COPY=${ENABLE_ZERO_COPY}"
+echo "BUILD_TYPE=${BUILD_TYPE}"
+echo "ENABLE_ASAN=${ENABLE_ASAN}"
 echo "CC=${CC}"
 echo "CXX=${CXX}"
 echo "==================================="
@@ -104,7 +130,10 @@ cmake ../.. \
     -DENABLE_DMA32=${ENABLE_DMA32} \
     -DENABLE_ZERO_COPY=${ENABLE_ZERO_COPY} \
     -DCMAKE_SYSTEM_NAME=Linux \
-    -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
+    -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
+    -DENABLE_ASAN=${ENABLE_ASAN} \
+    -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+    -DDISABLE_RGA=${DISABLE_RGA}
 make -j4
 make install
 

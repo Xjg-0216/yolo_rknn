@@ -59,19 +59,19 @@ int main(int argc, char **argv)
 
     image_buffer_t src_image;
     memset(&src_image, 0, sizeof(image_buffer_t));
-    // print_out.tik();
+    print_out.tik();
     ret = read_image(image_path, &src_image);
     if (ret != 0)
     {
         printf("read image fail! ret=%d image_path=%s\n", ret, image_path);
         goto out;
     }
-    // print_out.tok();
-    // print_out.print_time("read_image");
+    print_out.tok();
+    print_out.print_time("read_image");
 
     object_detect_result_list od_results;
 
-    // print_out.tik();
+    print_out.tik();
 #ifndef ENABLE_ZERO_COPY
     ret = inference_yolov10_model(&rknn_app_ctx, &src_image, &od_results);
 #else
@@ -82,8 +82,8 @@ int main(int argc, char **argv)
         printf("init_yolov10_model fail! ret=%d\n", ret);
         goto out;
     }
-    // print_out.tok();
-    // print_out.print_time("inference_yolov10_model");
+    print_out.tok();
+    print_out.print_time("inference_yolov10_model");
 
     // 画框和概率
     char text[256];
@@ -110,7 +110,11 @@ int main(int argc, char **argv)
 out:
     deinit_post_process();
 
+#ifndef ENABLE_ZERO_COPY
     ret = release_yolov10_model(&rknn_app_ctx);
+#else
+    ret = release_yolov10_zero_copy_model(&rknn_app_ctx);
+#endif
     if (ret != 0)
     {
         printf("release_yolov10_model fail! ret=%d\n", ret);
