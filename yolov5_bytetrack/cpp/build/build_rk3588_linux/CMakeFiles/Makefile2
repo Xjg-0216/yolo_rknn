@@ -120,8 +120,8 @@ utils.out/clean: utils.out/CMakeFiles/fileutils.dir/clean
 # Target rules for target CMakeFiles/yolov5_videocapture_demo.dir
 
 # All Build rule for target.
-CMakeFiles/yolov5_videocapture_demo.dir/all: utils.out/CMakeFiles/fileutils.dir/all
 CMakeFiles/yolov5_videocapture_demo.dir/all: utils.out/CMakeFiles/imageutils.dir/all
+CMakeFiles/yolov5_videocapture_demo.dir/all: utils.out/CMakeFiles/fileutils.dir/all
 	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/depend
 	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=13,14,15,16,17,18,19,20,21 "Built target yolov5_videocapture_demo"
@@ -148,9 +148,9 @@ CMakeFiles/yolov5_videocapture_demo.dir/clean:
 # Target rules for target CMakeFiles/yolov5_image_demo.dir
 
 # All Build rule for target.
+CMakeFiles/yolov5_image_demo.dir/all: utils.out/CMakeFiles/imageutils.dir/all
 CMakeFiles/yolov5_image_demo.dir/all: utils.out/CMakeFiles/imagedrawing.dir/all
 CMakeFiles/yolov5_image_demo.dir/all: utils.out/CMakeFiles/fileutils.dir/all
-CMakeFiles/yolov5_image_demo.dir/all: utils.out/CMakeFiles/imageutils.dir/all
 	$(MAKE) -f CMakeFiles/yolov5_image_demo.dir/build.make CMakeFiles/yolov5_image_demo.dir/depend
 	$(MAKE) -f CMakeFiles/yolov5_image_demo.dir/build.make CMakeFiles/yolov5_image_demo.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=9,10,11,12 "Built target yolov5_image_demo"

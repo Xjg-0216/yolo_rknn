@@ -13,8 +13,6 @@ endif ()
 find_package(OpenCV REQUIRED)
 # set(OpenCV_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/opencv/opencv-linux-aarch64/share/OpenCV)
 
-# yolov5 files
-set(rknpu_yolov5_file rknpu2/yolov5.cc)
 
 # dma
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/allocator/dma)
@@ -40,7 +38,7 @@ file(GLOB SRCS ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 add_executable(yolov5_image_demo
     yolov5_image_demo.cc
     postprocess.cc
-    ${rknpu_yolov5_file}
+    yolov5.cc
 )
 
 target_link_libraries(yolov5_image_demo
@@ -55,7 +53,7 @@ target_link_libraries(yolov5_image_demo
 add_executable(yolov5_videocapture_demo
     yolov5_videocapture_demo.cc
     postprocess.cc
-    ${rknpu_yolov5_file}
+    yolov5.cc
     bytetrack/src/BYTETracker.cpp
     bytetrack/src/STrack.cpp
     bytetrack/src/kalmanFilter.cpp
@@ -96,4 +94,5 @@ install(TARGETS yolov5_videocapture_demo DESTINATION .)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../model/GX_0330.jpg DESTINATION ./model)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../model/coco_80_labels_list.txt DESTINATION ./model)
 file(GLOB RKNN_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../model/*.rknn")
+file(GLOB VIDEO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../model/*.mp4")
 install(FILES ${RKNN_FILES} DESTINATION model)
