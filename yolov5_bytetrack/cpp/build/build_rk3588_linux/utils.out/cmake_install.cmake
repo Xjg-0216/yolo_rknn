@@ -1,8 +1,8 @@
-# Install script for directory: /home/xujg/yolov5_rknn/utils
+# Install script for directory: /home/xujg/yolo_rknn/utils
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/xujg/yolov5_rknn/yolov5/cpp/install/rk3588_linux")
+  set(CMAKE_INSTALL_PREFIX "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/install/rk3588_linux")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

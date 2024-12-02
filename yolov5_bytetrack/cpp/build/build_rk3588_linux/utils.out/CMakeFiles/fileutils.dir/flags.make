@@ -6,5 +6,5 @@ C_FLAGS =
 
 C_DEFINES = -DLIBRGA_IM2D_HANDLE
 
-C_INCLUDES = -I/home/xujg/yolov5_rknn/yolov5/cpp/../../3rdparty/allocator/dma -I/home/xujg/yolov5_rknn/utils 
+C_INCLUDES = -I/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/../../3rdparty/allocator/dma -I/home/xujg/yolo_rknn/utils 
 

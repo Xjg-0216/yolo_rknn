@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xujg/yolov5_rknn/yolov5/cpp
+CMAKE_SOURCE_DIR = /home/xujg/yolo_rknn/yolov5_bytetrack/cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux
+CMAKE_BINARY_DIR = /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,14 +126,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -E cmake_progress_start /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/3rdparty.out/CMakeFiles/progress.marks
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(MAKE) -f CMakeFiles/Makefile2 3rdparty.out/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles 0
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -E cmake_progress_start /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/3rdparty.out/CMakeFiles/progress.marks
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(MAKE) -f CMakeFiles/Makefile2 3rdparty.out/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(MAKE) -f CMakeFiles/Makefile2 3rdparty.out/clean
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(MAKE) -f CMakeFiles/Makefile2 3rdparty.out/clean
 .PHONY : clean
 
 # The main clean target
@@ -143,17 +143,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(MAKE) -f CMakeFiles/Makefile2 3rdparty.out/preinstall
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(MAKE) -f CMakeFiles/Makefile2 3rdparty.out/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(MAKE) -f CMakeFiles/Makefile2 3rdparty.out/preinstall
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(MAKE) -f CMakeFiles/Makefile2 3rdparty.out/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -179,6 +179,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

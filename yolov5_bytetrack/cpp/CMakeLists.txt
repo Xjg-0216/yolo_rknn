@@ -56,6 +56,11 @@ add_executable(yolov5_videocapture_demo
     yolov5_videocapture_demo.cc
     postprocess.cc
     ${rknpu_yolov5_file}
+    bytetrack/src/BYTETracker.cpp
+    bytetrack/src/STrack.cpp
+    bytetrack/src/kalmanFilter.cpp
+    bytetrack/src/lapjv.cpp
+    bytetrack/src/utils.cpp
 )
 
 target_link_libraries(yolov5_videocapture_demo
@@ -83,11 +88,12 @@ target_include_directories(yolov5_videocapture_demo PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${LIBRKNNRT_INCLUDES}
     ${LIBTIMER_INCLUDES}
+    ./bytetrack/include
 )
 
 install(TARGETS yolov5_image_demo DESTINATION .)
 install(TARGETS yolov5_videocapture_demo DESTINATION .)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../model/bus.jpg DESTINATION ./model)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../model/GX_0330.jpg DESTINATION ./model)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../model/coco_80_labels_list.txt DESTINATION ./model)
 file(GLOB RKNN_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../model/*.rknn")
 install(FILES ${RKNN_FILES} DESTINATION model)

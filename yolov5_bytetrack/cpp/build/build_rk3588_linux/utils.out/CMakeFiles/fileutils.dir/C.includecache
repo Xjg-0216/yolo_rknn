@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/xujg/yolov5_rknn/utils/file_utils.c
+/home/xujg/yolo_rknn/utils/file_utils.c
 stdio.h
 -
 stdlib.h

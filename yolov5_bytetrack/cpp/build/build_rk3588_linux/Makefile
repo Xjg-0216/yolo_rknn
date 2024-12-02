@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xujg/yolov5_rknn/yolov5/cpp
+CMAKE_SOURCE_DIR = /home/xujg/yolo_rknn/yolov5_bytetrack/cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux
+CMAKE_BINARY_DIR = /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,9 +126,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -233,6 +233,141 @@ fileutils: cmake_check_build_system
 fileutils/fast:
 	$(MAKE) -f utils.out/CMakeFiles/fileutils.dir/build.make utils.out/CMakeFiles/fileutils.dir/build
 .PHONY : fileutils/fast
+
+bytetrack/src/BYTETracker.o: bytetrack/src/BYTETracker.cpp.o
+
+.PHONY : bytetrack/src/BYTETracker.o
+
+# target to build an object file
+bytetrack/src/BYTETracker.cpp.o:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.o
+.PHONY : bytetrack/src/BYTETracker.cpp.o
+
+bytetrack/src/BYTETracker.i: bytetrack/src/BYTETracker.cpp.i
+
+.PHONY : bytetrack/src/BYTETracker.i
+
+# target to preprocess a source file
+bytetrack/src/BYTETracker.cpp.i:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.i
+.PHONY : bytetrack/src/BYTETracker.cpp.i
+
+bytetrack/src/BYTETracker.s: bytetrack/src/BYTETracker.cpp.s
+
+.PHONY : bytetrack/src/BYTETracker.s
+
+# target to generate assembly for a file
+bytetrack/src/BYTETracker.cpp.s:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.s
+.PHONY : bytetrack/src/BYTETracker.cpp.s
+
+bytetrack/src/STrack.o: bytetrack/src/STrack.cpp.o
+
+.PHONY : bytetrack/src/STrack.o
+
+# target to build an object file
+bytetrack/src/STrack.cpp.o:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.o
+.PHONY : bytetrack/src/STrack.cpp.o
+
+bytetrack/src/STrack.i: bytetrack/src/STrack.cpp.i
+
+.PHONY : bytetrack/src/STrack.i
+
+# target to preprocess a source file
+bytetrack/src/STrack.cpp.i:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.i
+.PHONY : bytetrack/src/STrack.cpp.i
+
+bytetrack/src/STrack.s: bytetrack/src/STrack.cpp.s
+
+.PHONY : bytetrack/src/STrack.s
+
+# target to generate assembly for a file
+bytetrack/src/STrack.cpp.s:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.s
+.PHONY : bytetrack/src/STrack.cpp.s
+
+bytetrack/src/kalmanFilter.o: bytetrack/src/kalmanFilter.cpp.o
+
+.PHONY : bytetrack/src/kalmanFilter.o
+
+# target to build an object file
+bytetrack/src/kalmanFilter.cpp.o:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.o
+.PHONY : bytetrack/src/kalmanFilter.cpp.o
+
+bytetrack/src/kalmanFilter.i: bytetrack/src/kalmanFilter.cpp.i
+
+.PHONY : bytetrack/src/kalmanFilter.i
+
+# target to preprocess a source file
+bytetrack/src/kalmanFilter.cpp.i:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.i
+.PHONY : bytetrack/src/kalmanFilter.cpp.i
+
+bytetrack/src/kalmanFilter.s: bytetrack/src/kalmanFilter.cpp.s
+
+.PHONY : bytetrack/src/kalmanFilter.s
+
+# target to generate assembly for a file
+bytetrack/src/kalmanFilter.cpp.s:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.s
+.PHONY : bytetrack/src/kalmanFilter.cpp.s
+
+bytetrack/src/lapjv.o: bytetrack/src/lapjv.cpp.o
+
+.PHONY : bytetrack/src/lapjv.o
+
+# target to build an object file
+bytetrack/src/lapjv.cpp.o:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.o
+.PHONY : bytetrack/src/lapjv.cpp.o
+
+bytetrack/src/lapjv.i: bytetrack/src/lapjv.cpp.i
+
+.PHONY : bytetrack/src/lapjv.i
+
+# target to preprocess a source file
+bytetrack/src/lapjv.cpp.i:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.i
+.PHONY : bytetrack/src/lapjv.cpp.i
+
+bytetrack/src/lapjv.s: bytetrack/src/lapjv.cpp.s
+
+.PHONY : bytetrack/src/lapjv.s
+
+# target to generate assembly for a file
+bytetrack/src/lapjv.cpp.s:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.s
+.PHONY : bytetrack/src/lapjv.cpp.s
+
+bytetrack/src/utils.o: bytetrack/src/utils.cpp.o
+
+.PHONY : bytetrack/src/utils.o
+
+# target to build an object file
+bytetrack/src/utils.cpp.o:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.o
+.PHONY : bytetrack/src/utils.cpp.o
+
+bytetrack/src/utils.i: bytetrack/src/utils.cpp.i
+
+.PHONY : bytetrack/src/utils.i
+
+# target to preprocess a source file
+bytetrack/src/utils.cpp.i:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.i
+.PHONY : bytetrack/src/utils.cpp.i
+
+bytetrack/src/utils.s: bytetrack/src/utils.cpp.s
+
+.PHONY : bytetrack/src/utils.s
+
+# target to generate assembly for a file
+bytetrack/src/utils.cpp.s:
+	$(MAKE) -f CMakeFiles/yolov5_videocapture_demo.dir/build.make CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.s
+.PHONY : bytetrack/src/utils.cpp.s
 
 postprocess.o: postprocess.cc.o
 
@@ -366,6 +501,21 @@ help:
 	@echo "... imageutils"
 	@echo "... imagedrawing"
 	@echo "... fileutils"
+	@echo "... bytetrack/src/BYTETracker.o"
+	@echo "... bytetrack/src/BYTETracker.i"
+	@echo "... bytetrack/src/BYTETracker.s"
+	@echo "... bytetrack/src/STrack.o"
+	@echo "... bytetrack/src/STrack.i"
+	@echo "... bytetrack/src/STrack.s"
+	@echo "... bytetrack/src/kalmanFilter.o"
+	@echo "... bytetrack/src/kalmanFilter.i"
+	@echo "... bytetrack/src/kalmanFilter.s"
+	@echo "... bytetrack/src/lapjv.o"
+	@echo "... bytetrack/src/lapjv.i"
+	@echo "... bytetrack/src/lapjv.s"
+	@echo "... bytetrack/src/utils.o"
+	@echo "... bytetrack/src/utils.i"
+	@echo "... bytetrack/src/utils.s"
 	@echo "... postprocess.o"
 	@echo "... postprocess.i"
 	@echo "... postprocess.s"

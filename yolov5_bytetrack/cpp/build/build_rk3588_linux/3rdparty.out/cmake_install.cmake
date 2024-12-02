@@ -1,8 +1,8 @@
-# Install script for directory: /home/xujg/yolov5_rknn/3rdparty
+# Install script for directory: /home/xujg/yolo_rknn/3rdparty
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/xujg/yolov5_rknn/yolov5/cpp/install/rk3588_linux")
+  set(CMAKE_INSTALL_PREFIX "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/install/rk3588_linux")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,10 +38,10 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE PROGRAM FILES "/home/xujg/yolov5_rknn/3rdparty/rknpu2/Linux/aarch64/librknnrt.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE PROGRAM FILES "/home/xujg/yolo_rknn/3rdparty/rknpu2/Linux/aarch64/librknnrt.so")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE PROGRAM FILES "/home/xujg/yolov5_rknn/3rdparty/librga/Linux/aarch64/librga.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE PROGRAM FILES "/home/xujg/yolo_rknn/3rdparty/librga/Linux/aarch64/librga.so")
 endif()
 

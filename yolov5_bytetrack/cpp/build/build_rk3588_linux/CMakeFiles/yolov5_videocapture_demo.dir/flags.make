@@ -6,5 +6,5 @@ CXX_FLAGS =   -pthread
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/xujg/yolov5_rknn/yolov5/cpp/../../3rdparty/allocator/dma -I/home/xujg/yolov5_rknn/yolov5/cpp -I/home/xujg/yolov5_rknn/3rdparty/rknpu2/include -I/home/xujg/yolov5_rknn/3rdparty/timer -I/home/xujg/yolov5_rknn/utils -I/home/xujg/yolov5_rknn/3rdparty/stb_image -I/home/xujg/yolov5_rknn/3rdparty/jpeg_turbo/include -I/home/xujg/yolov5_rknn/3rdparty/librga/include -isystem /usr/local/include/opencv4 
+CXX_INCLUDES = -I/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/../../3rdparty/allocator/dma -I/home/xujg/yolo_rknn/yolov5_bytetrack/cpp -I/home/xujg/yolo_rknn/3rdparty/rknpu2/include -I/home/xujg/yolo_rknn/3rdparty/timer -I/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/./bytetrack/include -I/home/xujg/yolo_rknn/utils -I/home/xujg/yolo_rknn/3rdparty/stb_image -I/home/xujg/yolo_rknn/3rdparty/jpeg_turbo/include -I/home/xujg/yolo_rknn/3rdparty/librga/include -isystem /usr/local/include/opencv4 
 

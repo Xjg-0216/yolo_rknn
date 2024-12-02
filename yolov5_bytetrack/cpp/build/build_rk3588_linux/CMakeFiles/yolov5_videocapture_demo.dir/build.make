@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xujg/yolov5_rknn/yolov5/cpp
+CMAKE_SOURCE_DIR = /home/xujg/yolo_rknn/yolov5_bytetrack/cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux
+CMAKE_BINARY_DIR = /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux
 
 # Include any dependencies generated for this target.
 include CMakeFiles/yolov5_videocapture_demo.dir/depend.make
@@ -59,48 +59,118 @@ include CMakeFiles/yolov5_videocapture_demo.dir/flags.make
 
 CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.o: CMakeFiles/yolov5_videocapture_demo.dir/flags.make
 CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.o: ../../yolov5_videocapture_demo.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.o"
-	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.o -c /home/xujg/yolov5_rknn/yolov5/cpp/yolov5_videocapture_demo.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.o"
+	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.o -c /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/yolov5_videocapture_demo.cc
 
 CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.i"
-	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolov5_rknn/yolov5/cpp/yolov5_videocapture_demo.cc > CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.i
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/yolov5_videocapture_demo.cc > CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.i
 
 CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.s"
-	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolov5_rknn/yolov5/cpp/yolov5_videocapture_demo.cc -o CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.s
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/yolov5_videocapture_demo.cc -o CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.s
 
 CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.o: CMakeFiles/yolov5_videocapture_demo.dir/flags.make
 CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.o: ../../postprocess.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.o"
-	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.o -c /home/xujg/yolov5_rknn/yolov5/cpp/postprocess.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.o"
+	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.o -c /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/postprocess.cc
 
 CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.i"
-	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolov5_rknn/yolov5/cpp/postprocess.cc > CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.i
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/postprocess.cc > CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.i
 
 CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.s"
-	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolov5_rknn/yolov5/cpp/postprocess.cc -o CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.s
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/postprocess.cc -o CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.s
 
 CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o: CMakeFiles/yolov5_videocapture_demo.dir/flags.make
 CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o: ../../rknpu2/yolov5.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o"
-	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o -c /home/xujg/yolov5_rknn/yolov5/cpp/rknpu2/yolov5.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o"
+	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o -c /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/rknpu2/yolov5.cc
 
 CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.i"
-	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolov5_rknn/yolov5/cpp/rknpu2/yolov5.cc > CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.i
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/rknpu2/yolov5.cc > CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.i
 
 CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.s"
-	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolov5_rknn/yolov5/cpp/rknpu2/yolov5.cc -o CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.s
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/rknpu2/yolov5.cc -o CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.s
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.o: CMakeFiles/yolov5_videocapture_demo.dir/flags.make
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.o: ../../bytetrack/src/BYTETracker.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.o"
+	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.o -c /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/BYTETracker.cpp
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.i"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/BYTETracker.cpp > CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.i
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.s"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/BYTETracker.cpp -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.s
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.o: CMakeFiles/yolov5_videocapture_demo.dir/flags.make
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.o: ../../bytetrack/src/STrack.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.o"
+	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.o -c /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/STrack.cpp
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.i"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/STrack.cpp > CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.i
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.s"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/STrack.cpp -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.s
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.o: CMakeFiles/yolov5_videocapture_demo.dir/flags.make
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.o: ../../bytetrack/src/kalmanFilter.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.o"
+	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.o -c /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/kalmanFilter.cpp
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.i"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/kalmanFilter.cpp > CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.i
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.s"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/kalmanFilter.cpp -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.s
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.o: CMakeFiles/yolov5_videocapture_demo.dir/flags.make
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.o: ../../bytetrack/src/lapjv.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.o"
+	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.o -c /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/lapjv.cpp
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.i"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/lapjv.cpp > CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.i
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.s"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/lapjv.cpp -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.s
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.o: CMakeFiles/yolov5_videocapture_demo.dir/flags.make
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.o: ../../bytetrack/src/utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.o"
+	/usr/bin/aarch64-linux-gnu-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.o -c /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/utils.cpp
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.i"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/utils.cpp > CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.i
+
+CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.s"
+	/usr/bin/aarch64-linux-gnu-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/bytetrack/src/utils.cpp -o CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.s
 
 # Object files for target yolov5_videocapture_demo
 yolov5_videocapture_demo_OBJECTS = \
 "CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.o" \
 "CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.o" \
-"CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o"
+"CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o" \
+"CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.o" \
+"CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.o" \
+"CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.o" \
+"CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.o" \
+"CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.o"
 
 # External object files for target yolov5_videocapture_demo
 yolov5_videocapture_demo_EXTERNAL_OBJECTS =
@@ -108,10 +178,15 @@ yolov5_videocapture_demo_EXTERNAL_OBJECTS =
 yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/yolov5_videocapture_demo.cc.o
 yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/postprocess.cc.o
 yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/rknpu2/yolov5.cc.o
+yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/BYTETracker.cpp.o
+yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/STrack.cpp.o
+yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/kalmanFilter.cpp.o
+yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/lapjv.cpp.o
+yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/bytetrack/src/utils.cpp.o
 yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/build.make
 yolov5_videocapture_demo: utils.out/libimageutils.a
 yolov5_videocapture_demo: utils.out/libfileutils.a
-yolov5_videocapture_demo: /home/xujg/yolov5_rknn/3rdparty/rknpu2/Linux/aarch64/librknnrt.so
+yolov5_videocapture_demo: /home/xujg/yolo_rknn/3rdparty/rknpu2/Linux/aarch64/librknnrt.so
 yolov5_videocapture_demo: /usr/local/lib/libopencv_gapi.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_highgui.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_ml.so.4.6.0
@@ -120,8 +195,8 @@ yolov5_videocapture_demo: /usr/local/lib/libopencv_photo.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_stitching.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_video.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_videoio.so.4.6.0
-yolov5_videocapture_demo: /home/xujg/yolov5_rknn/3rdparty/jpeg_turbo/Linux/aarch64/libturbojpeg.a
-yolov5_videocapture_demo: /home/xujg/yolov5_rknn/3rdparty/librga/Linux/aarch64/librga.a
+yolov5_videocapture_demo: /home/xujg/yolo_rknn/3rdparty/jpeg_turbo/Linux/aarch64/libturbojpeg.a
+yolov5_videocapture_demo: /home/xujg/yolo_rknn/3rdparty/librga/Linux/aarch64/librga.a
 yolov5_videocapture_demo: /usr/local/lib/libopencv_imgcodecs.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_dnn.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_calib3d.so.4.6.0
@@ -130,7 +205,7 @@ yolov5_videocapture_demo: /usr/local/lib/libopencv_flann.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_imgproc.so.4.6.0
 yolov5_videocapture_demo: /usr/local/lib/libopencv_core.so.4.6.0
 yolov5_videocapture_demo: CMakeFiles/yolov5_videocapture_demo.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable yolov5_videocapture_demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable yolov5_videocapture_demo"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/yolov5_videocapture_demo.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -143,6 +218,6 @@ CMakeFiles/yolov5_videocapture_demo.dir/clean:
 .PHONY : CMakeFiles/yolov5_videocapture_demo.dir/clean
 
 CMakeFiles/yolov5_videocapture_demo.dir/depend:
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/xujg/yolov5_rknn/yolov5/cpp /home/xujg/yolov5_rknn/yolov5/cpp /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles/yolov5_videocapture_demo.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/xujg/yolo_rknn/yolov5_bytetrack/cpp /home/xujg/yolo_rknn/yolov5_bytetrack/cpp /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles/yolov5_videocapture_demo.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/yolov5_videocapture_demo.dir/depend
 

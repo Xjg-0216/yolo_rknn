@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/xujg/yolov5_rknn/3rdparty/jpeg_turbo/include/turbojpeg.h
+/home/xujg/yolo_rknn/3rdparty/jpeg_turbo/include/turbojpeg.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/drmrga.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/drmrga.h
 stdint.h
 -
 errno.h
@@ -16,7 +16,7 @@ errno.h
 sys/cdefs.h
 -
 rga.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/rga.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/rga.h
 hardware/gralloc.h
 -
 hardware/hardware.h
@@ -28,55 +28,55 @@ cutils/native_handle.h
 hardware/hardware_rockchip.h
 -
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d.h
 im2d_version.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_version.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_version.h
 im2d_type.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_type.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_type.h
 im2d_common.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_common.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_common.h
 im2d_buffer.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_buffer.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_buffer.h
 im2d_single.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_single.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_single.h
 im2d_task.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_task.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_task.h
 im2d_mpi.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_mpi.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_mpi.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_buffer.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_buffer.h
 im2d_type.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_type.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_type.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_common.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_common.h
 im2d_type.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_type.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_type.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_mpi.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_mpi.h
 im2d_type.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_type.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_type.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_single.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_single.h
 im2d_type.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_type.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_type.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_task.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_task.h
 im2d_type.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_type.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_type.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_type.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_type.h
 stdint.h
 -
 rga.h
-/home/xujg/yolov5_rknn/3rdparty/librga/include/rga.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/rga.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/im2d_version.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/im2d_version.h
 
-/home/xujg/yolov5_rknn/3rdparty/librga/include/rga.h
+/home/xujg/yolo_rknn/3rdparty/librga/include/rga.h
 
-/home/xujg/yolov5_rknn/3rdparty/stb_image/stb_image.h
+/home/xujg/yolo_rknn/3rdparty/stb_image/stb_image.h
 stb_image.h
-/home/xujg/yolov5_rknn/3rdparty/stb_image/stb_image.h
+/home/xujg/yolo_rknn/3rdparty/stb_image/stb_image.h
 stdio.h
 -
 stdlib.h
@@ -106,7 +106,7 @@ intrin.h
 arm_neon.h
 -
 
-/home/xujg/yolov5_rknn/3rdparty/stb_image/stb_image_write.h
+/home/xujg/yolo_rknn/3rdparty/stb_image/stb_image_write.h
 stdlib.h
 -
 stdio.h
@@ -122,11 +122,11 @@ math.h
 assert.h
 -
 
-/home/xujg/yolov5_rknn/utils/common.h
+/home/xujg/yolo_rknn/utils/common.h
 
-/home/xujg/yolov5_rknn/utils/file_utils.h
+/home/xujg/yolo_rknn/utils/file_utils.h
 
-/home/xujg/yolov5_rknn/utils/image_utils.c
+/home/xujg/yolo_rknn/utils/image_utils.c
 stdio.h
 -
 stdlib.h
@@ -138,21 +138,21 @@ math.h
 sys/time.h
 -
 im2d.h
-/home/xujg/yolov5_rknn/utils/im2d.h
+/home/xujg/yolo_rknn/utils/im2d.h
 drmrga.h
-/home/xujg/yolov5_rknn/utils/drmrga.h
+/home/xujg/yolo_rknn/utils/drmrga.h
 stb_image.h
-/home/xujg/yolov5_rknn/utils/stb_image.h
+/home/xujg/yolo_rknn/utils/stb_image.h
 stb_image_write.h
-/home/xujg/yolov5_rknn/utils/stb_image_write.h
+/home/xujg/yolo_rknn/utils/stb_image_write.h
 turbojpeg.h
-/home/xujg/yolov5_rknn/utils/turbojpeg.h
+/home/xujg/yolo_rknn/utils/turbojpeg.h
 image_utils.h
-/home/xujg/yolov5_rknn/utils/image_utils.h
+/home/xujg/yolo_rknn/utils/image_utils.h
 file_utils.h
-/home/xujg/yolov5_rknn/utils/file_utils.h
+/home/xujg/yolo_rknn/utils/file_utils.h
 
-/home/xujg/yolov5_rknn/utils/image_utils.h
+/home/xujg/yolo_rknn/utils/image_utils.h
 common.h
-/home/xujg/yolov5_rknn/utils/common.h
+/home/xujg/yolo_rknn/utils/common.h
 

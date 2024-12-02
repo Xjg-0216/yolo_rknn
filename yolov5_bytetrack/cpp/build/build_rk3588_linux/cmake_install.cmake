@@ -1,8 +1,8 @@
-# Install script for directory: /home/xujg/yolov5_rknn/yolov5/cpp
+# Install script for directory: /home/xujg/yolo_rknn/yolov5_bytetrack/cpp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/xujg/yolov5_rknn/yolov5/cpp/install/rk3588_linux")
+  set(CMAKE_INSTALL_PREFIX "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/install/rk3588_linux")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -44,12 +44,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_image_demo"
          RPATH "$ORIGIN/lib")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/." TYPE EXECUTABLE FILES "/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/yolov5_image_demo")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/." TYPE EXECUTABLE FILES "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/yolov5_image_demo")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_image_demo" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_image_demo")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_image_demo"
-         OLD_RPATH "/home/xujg/yolov5_rknn/3rdparty/rknpu2/Linux/aarch64:"
+         OLD_RPATH "/home/xujg/yolo_rknn/3rdparty/rknpu2/Linux/aarch64:"
          NEW_RPATH "$ORIGIN/lib")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/aarch64-linux-gnu-strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_image_demo")
@@ -64,12 +64,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_videocapture_demo"
          RPATH "$ORIGIN/lib")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/." TYPE EXECUTABLE FILES "/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/yolov5_videocapture_demo")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/." TYPE EXECUTABLE FILES "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/yolov5_videocapture_demo")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_videocapture_demo" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_videocapture_demo")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_videocapture_demo"
-         OLD_RPATH "/home/xujg/yolov5_rknn/3rdparty/rknpu2/Linux/aarch64:/usr/local/lib:"
+         OLD_RPATH "/home/xujg/yolo_rknn/3rdparty/rknpu2/Linux/aarch64:/usr/local/lib:"
          NEW_RPATH "$ORIGIN/lib")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/aarch64-linux-gnu-strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/./yolov5_videocapture_demo")
@@ -78,17 +78,21 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/./model" TYPE FILE FILES "/home/xujg/yolov5_rknn/yolov5/cpp/../model/bus.jpg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/./model" TYPE FILE FILES "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/../model/bus.jpg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/./model" TYPE FILE FILES "/home/xujg/yolov5_rknn/yolov5/cpp/../model/coco_80_labels_list.txt")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/./model" TYPE FILE FILES "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/../model/coco_80_labels_list.txt")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/model" TYPE FILE FILES "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/../model/yolov5_int8.rknn")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/3rdparty.out/cmake_install.cmake")
-  include("/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out/cmake_install.cmake")
+  include("/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/3rdparty.out/cmake_install.cmake")
+  include("/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out/cmake_install.cmake")
 
 endif()
 
@@ -100,5 +104,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

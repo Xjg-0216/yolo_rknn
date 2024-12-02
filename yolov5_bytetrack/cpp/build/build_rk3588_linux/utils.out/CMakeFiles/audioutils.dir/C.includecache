@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/xujg/yolov5_rknn/3rdparty/libsndfile/include/sndfile.h
+/home/xujg/yolo_rknn/3rdparty/libsndfile/include/sndfile.h
 stdio.h
 -
 stdint.h
@@ -14,7 +14,7 @@ stdint.h
 sys/types.h
 -
 
-/home/xujg/yolov5_rknn/utils/audio_utils.c
+/home/xujg/yolo_rknn/utils/audio_utils.c
 stdio.h
 -
 stdlib.h
@@ -24,7 +24,7 @@ sndfile.h
 math.h
 -
 audio_utils.h
-/home/xujg/yolov5_rknn/utils/audio_utils.h
+/home/xujg/yolo_rknn/utils/audio_utils.h
 
-/home/xujg/yolov5_rknn/utils/audio_utils.h
+/home/xujg/yolo_rknn/utils/audio_utils.h
 

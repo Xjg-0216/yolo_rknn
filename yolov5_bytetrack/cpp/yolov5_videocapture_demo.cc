@@ -1,18 +1,3 @@
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/*-------------------------------------------
-                Includes
--------------------------------------------*/
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,9 +32,6 @@ static const unsigned char colors[19][3] = {
     {139, 125, 96}
 };
 
-/*-------------------------------------------
-                  Main Function
--------------------------------------------*/
 int main(int argc, char **argv)
 {
     if (argc != 3)
@@ -74,20 +56,18 @@ int main(int argc, char **argv)
     memset(&rknn_app_ctx, 0, sizeof(rknn_app_context_t));
     memset(&src_image, 0, sizeof(image_buffer_t));
 
+    BYTETracker tracker;
+    std::vector<Object> objects;
+
     cv::VideoCapture cap;
     if (isdigit(device_name[0])) {
-        // 打开摄像头
         int camera_id = atoi(argv[2]);
         cap.open(camera_id);
         if (!cap.isOpened()) {
             printf("Error: Could not open camera.\n");
             return -1;
         }
-        // cap.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
-        // cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);//宽度
-        // cap.set(cv::CAP_PROP_FRAME_HEIGHT, 640);//高度
     } else {
-        // 打开视频文件等
         cap.open(argv[2]);
         if (!cap.isOpened()) {  
             printf("Error: Could not open video file.\n");
@@ -109,17 +89,15 @@ int main(int argc, char **argv)
     }
 
     // 推理，画框，显示
-	while(true) {
+    while(true) {
         gettimeofday(&start_time, NULL);
 
-		// cap >> frame;
         if (!cap.read(frame)) {  
             printf("cap read frame fail!\n");
             break;  
         }  
 
         cv::cvtColor(frame, image, cv::COLOR_BGR2RGB);
-        // image.convertTo(image, CV_8UC3);
         src_image.width  = image.cols;
         src_image.height = image.rows;
         src_image.format = IMAGE_FORMAT_RGB888;
@@ -139,46 +117,62 @@ int main(int argc, char **argv)
         timer.tok();
         timer.print_time("inference_yolov5_model");
 
-        
-
-        char text[256];
-        int color_index = 0;
-        for (int i = 0; i < od_results.count; i++)
-        {
-            const unsigned char* color = colors[color_index % 19];
-            cv::Scalar cc(color[0], color[1], color[2]);
-            color_index++;
-
+        // 将检测结果转化为ByteTrack格式
+        objects.clear(); // 清空上一帧的对象
+        for (int i = 0; i < od_results.count; i++) {
             object_detect_result *det_result = &(od_results.results[i]);
-            printf("%s @ (%d %d %d %d) %.3f\n", coco_cls_to_name(det_result->cls_id),
-                det_result->box.left, det_result->box.top,
-                det_result->box.right, det_result->box.bottom,
-                det_result->prop);
-            sprintf(text, "%s %.1f%%", coco_cls_to_name(det_result->cls_id), det_result->prop * 100);
+            // if (det_result->prop < 0.5) continue; // 过滤低置信度目标
 
-            cv::rectangle(frame, cv::Rect(cv::Point(det_result->box.left, det_result->box.top), 
-                            cv::Point(det_result->box.right, det_result->box.bottom)), cc, 2);
+            Object obj;
+            obj.label = det_result->cls_id;
+            obj.prob = det_result->prop;
+            obj.rect = cv::Rect(det_result->box.left, det_result->box.top,
+                               det_result->box.right - det_result->box.left,
+                               det_result->box.bottom - det_result->box.top);
+            objects.push_back(obj);
+        }
+
+        // 调用 ByteTrack 更新跟踪信息
+        auto tracked_objects = tracker.update(objects);
+
+        // 可视化
+        for (const auto& tracked : tracked_objects) {
+            const unsigned char* color = colors[tracked.track_id % 19];
+            cv::Scalar cc(color[0], color[1], color[2]);
+
+            char text[256];
+            // 使用 tracked.score 代替 prob, tracked.tlwh 来获取目标框
+            sprintf(text, "ID:%d %.1f%%", tracked.track_id, tracked.score * 100);
+
+            // 使用 tlwh 来绘制框
+            float x = tracked.tlwh[0];
+            float y = tracked.tlwh[1];
+            float w = tracked.tlwh[2];
+            float h = tracked.tlwh[3];
+            cv::Rect target_rect(x, y, w, h);
+
+            cv::rectangle(frame, target_rect, cc, 2);
 
             int baseLine = 0;
             cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
 
-            int x = det_result->box.left;
-            int y = det_result->box.top - label_size.height - baseLine;
-            if (y < 0)
-                y = 0;
-            if (x + label_size.width > frame.cols)
-                x = frame.cols - label_size.width;
+            int tx = x;
+            int ty = y - label_size.height - baseLine;
+            if (ty < 0) ty = 0;
+            if (tx + label_size.width > frame.cols) tx = frame.cols - label_size.width;
 
-            cv::rectangle(frame, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)),cc,-1);
-            cv::putText(frame, text, cv::Point(x, y + label_size.height),cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255));
+                // 绘制文本背景矩形
+                cv::rectangle(frame, cv::Rect(cv::Point(tx, ty), cv::Size(label_size.width, label_size.height + baseLine)), cc, -1);
+                // 绘制文本
+                cv::putText(frame, text, cv::Point(tx, ty + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255));
+            }
+
+        cv::imshow("YOLOv5 + ByteTrack Demo", frame);
+
+        char c = cv::waitKey(1);
+        if (c == 27) { // ESC
+            break;
         }
-		cv::imshow("YOLOv5 Videocapture Demo", frame);
-
-		char c = cv::waitKey(1);
-		if (c == 27) { // ESC
-			break;
-		}
-
     }
 
 out:

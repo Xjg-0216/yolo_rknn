@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xujg/yolov5_rknn/yolov5/cpp
+CMAKE_SOURCE_DIR = /home/xujg/yolo_rknn/yolov5_bytetrack/cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux
+CMAKE_BINARY_DIR = /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux
 
 # Include any dependencies generated for this target.
 include utils.out/CMakeFiles/imagedrawing.dir/depend.make
@@ -58,17 +58,17 @@ include utils.out/CMakeFiles/imagedrawing.dir/progress.make
 include utils.out/CMakeFiles/imagedrawing.dir/flags.make
 
 utils.out/CMakeFiles/imagedrawing.dir/image_drawing.c.o: utils.out/CMakeFiles/imagedrawing.dir/flags.make
-utils.out/CMakeFiles/imagedrawing.dir/image_drawing.c.o: /home/xujg/yolov5_rknn/utils/image_drawing.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object utils.out/CMakeFiles/imagedrawing.dir/image_drawing.c.o"
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out && /usr/bin/aarch64-linux-gnu-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/imagedrawing.dir/image_drawing.c.o   -c /home/xujg/yolov5_rknn/utils/image_drawing.c
+utils.out/CMakeFiles/imagedrawing.dir/image_drawing.c.o: /home/xujg/yolo_rknn/utils/image_drawing.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object utils.out/CMakeFiles/imagedrawing.dir/image_drawing.c.o"
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out && /usr/bin/aarch64-linux-gnu-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/imagedrawing.dir/image_drawing.c.o   -c /home/xujg/yolo_rknn/utils/image_drawing.c
 
 utils.out/CMakeFiles/imagedrawing.dir/image_drawing.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/imagedrawing.dir/image_drawing.c.i"
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out && /usr/bin/aarch64-linux-gnu-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xujg/yolov5_rknn/utils/image_drawing.c > CMakeFiles/imagedrawing.dir/image_drawing.c.i
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out && /usr/bin/aarch64-linux-gnu-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xujg/yolo_rknn/utils/image_drawing.c > CMakeFiles/imagedrawing.dir/image_drawing.c.i
 
 utils.out/CMakeFiles/imagedrawing.dir/image_drawing.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/imagedrawing.dir/image_drawing.c.s"
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out && /usr/bin/aarch64-linux-gnu-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xujg/yolov5_rknn/utils/image_drawing.c -o CMakeFiles/imagedrawing.dir/image_drawing.c.s
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out && /usr/bin/aarch64-linux-gnu-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xujg/yolo_rknn/utils/image_drawing.c -o CMakeFiles/imagedrawing.dir/image_drawing.c.s
 
 # Object files for target imagedrawing
 imagedrawing_OBJECTS = \
@@ -80,9 +80,9 @@ imagedrawing_EXTERNAL_OBJECTS =
 utils.out/libimagedrawing.a: utils.out/CMakeFiles/imagedrawing.dir/image_drawing.c.o
 utils.out/libimagedrawing.a: utils.out/CMakeFiles/imagedrawing.dir/build.make
 utils.out/libimagedrawing.a: utils.out/CMakeFiles/imagedrawing.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C static library libimagedrawing.a"
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out && $(CMAKE_COMMAND) -P CMakeFiles/imagedrawing.dir/cmake_clean_target.cmake
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/imagedrawing.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C static library libimagedrawing.a"
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out && $(CMAKE_COMMAND) -P CMakeFiles/imagedrawing.dir/cmake_clean_target.cmake
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/imagedrawing.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 utils.out/CMakeFiles/imagedrawing.dir/build: utils.out/libimagedrawing.a
@@ -90,10 +90,10 @@ utils.out/CMakeFiles/imagedrawing.dir/build: utils.out/libimagedrawing.a
 .PHONY : utils.out/CMakeFiles/imagedrawing.dir/build
 
 utils.out/CMakeFiles/imagedrawing.dir/clean:
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out && $(CMAKE_COMMAND) -P CMakeFiles/imagedrawing.dir/cmake_clean.cmake
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out && $(CMAKE_COMMAND) -P CMakeFiles/imagedrawing.dir/cmake_clean.cmake
 .PHONY : utils.out/CMakeFiles/imagedrawing.dir/clean
 
 utils.out/CMakeFiles/imagedrawing.dir/depend:
-	cd /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/xujg/yolov5_rknn/yolov5/cpp /home/xujg/yolov5_rknn/utils /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out /home/xujg/yolov5_rknn/yolov5/cpp/build/build_rk3588_linux/utils.out/CMakeFiles/imagedrawing.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/xujg/yolo_rknn/yolov5_bytetrack/cpp /home/xujg/yolo_rknn/utils /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out /home/xujg/yolo_rknn/yolov5_bytetrack/cpp/build/build_rk3588_linux/utils.out/CMakeFiles/imagedrawing.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : utils.out/CMakeFiles/imagedrawing.dir/depend
 
