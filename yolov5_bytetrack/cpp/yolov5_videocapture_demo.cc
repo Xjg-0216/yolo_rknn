@@ -52,7 +52,6 @@ int main(int argc, char **argv)
     rknn_app_context_t rknn_app_ctx;
     image_buffer_t src_image;
     object_detect_result_list od_results;
-
     memset(&rknn_app_ctx, 0, sizeof(rknn_app_context_t));
     memset(&src_image, 0, sizeof(image_buffer_t));
 
@@ -87,7 +86,7 @@ int main(int argc, char **argv)
         printf("init yolov5_model fail! ret=%d model_path=%s\n", ret, model_path);
         goto out;
     }
-
+    
     // 推理，画框，显示
     while(true) {
         gettimeofday(&start_time, NULL);
@@ -121,7 +120,6 @@ int main(int argc, char **argv)
         objects.clear(); // 清空上一帧的对象
         for (int i = 0; i < od_results.count; i++) {
             object_detect_result *det_result = &(od_results.results[i]);
-            // if (det_result->prop < 0.5) continue; // 过滤低置信度目标
 
             Object obj;
             obj.label = det_result->cls_id;
@@ -133,7 +131,8 @@ int main(int argc, char **argv)
         }
 
         // 调用 ByteTrack 更新跟踪信息
-        auto tracked_objects = tracker.update(objects);
+        vector<STrack> tracked_objects = tracker.update(objects);
+
 
         // 可视化
         for (const auto& tracked : tracked_objects) {
@@ -142,10 +141,11 @@ int main(int argc, char **argv)
 
             char text[256];
             // 使用 tracked.score 代替 prob, tracked.tlwh 来获取目标框
-            sprintf(text, "ID:%d %.1f%%", tracked.track_id, tracked.score * 100);
+            // sprintf(text, "ID:%d %.1f%%", tracked.track_id, tracked.score * 100);
+            sprintf(text, "ID:%d %.1f%% %s", tracked.track_id, tracked.score * 100, coco_cls_to_name(tracked.label));
 
             // 使用 tlwh 来绘制框
-            float x = tracked.tlwh[0];
+            float x = tracked.tlwh[0];  
             float y = tracked.tlwh[1];
             float w = tracked.tlwh[2];
             float h = tracked.tlwh[3];
