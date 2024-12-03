@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     memset(&rknn_app_ctx, 0, sizeof(rknn_app_context_t));
     memset(&src_image, 0, sizeof(image_buffer_t));
 
-    BYTETracker tracker;
+    BYTETracker tracker(int frame_rate = 30, int track_buffer = 90);
     std::vector<Object> objects;
 
     cv::VideoCapture cap;

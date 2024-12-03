@@ -22,10 +22,6 @@
 #include "image_utils.h"
 #include "file_utils.h"
 
-#if defined(RV1106_1103) 
-    #include "dma_alloc.hpp"
-#endif
-
 #include <opencv2/opencv.hpp>
 
 static const unsigned char colors[19][3] = {
@@ -177,12 +173,7 @@ out:
 
     if (src_image.virt_addr != NULL)
     {
-#if defined(RV1106_1103) 
-        dma_buf_free(rknn_app_ctx.img_dma_buf.size, &rknn_app_ctx.img_dma_buf.dma_buf_fd, 
-                rknn_app_ctx.img_dma_buf.dma_buf_virt_addr);
-#else
         free(src_image.virt_addr);
-#endif
     }
 
     return 0;
