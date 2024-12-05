@@ -16,3 +16,5 @@ set(SOURCES
 # 创建可执行文件
 add_executable(uav_positioning ${SOURCES})
 
+
+add_executable(demo src/demo.cpp)
