@@ -23,30 +23,27 @@ public:
              0.000, 0.000, 1.000;
 
         // Set rotation matrix based on Euler angles (yaw, pitch, roll)
-        double yaw = 1.827;   // Example yaw in radians
-        double pitch = -0.031; // Example pitch in radians
-        double roll = 0.157;  // Example roll in radians
+        double yaw = 0;   // Example yaw in radians
+        double pitch = 0; // Example pitch in radians
+        double roll = 0;  // Example roll in radians
 
         // Create rotation matrices for yaw, pitch, and roll
-        Eigen::Matrix3d R_yaw, R_pitch, R_roll;
+        Eigen::Matrix3d R_x, R_y, R_z;
 
-        // Yaw rotation matrix
-        R_yaw << std::cos(yaw), 0, std::sin(yaw),
+
+        R_x << 1, 0, 0,
+            0, std::cos(roll), std::sin(roll),
+            0, -std::sin(roll), std::cos(roll);
+
+        R_y << std::cos(pitch), 0, -std::sin(pitch),
                  0, 1, 0,
-                 -std::sin(yaw), 0, std::cos(yaw);
+                 std::sin(pitch), 0, std::cos(pitch);
 
-        // Pitch rotation matrix
-        R_pitch << 1, 0, 0,
-                   0, std::cos(pitch), -std::sin(pitch),
-                   0, std::sin(pitch), std::cos(pitch);
-
-        // Roll rotation matrix
-        R_roll << std::cos(roll), -std::sin(roll), 0,
-                  std::sin(roll), std::cos(roll), 0,
+        R_z << std::cos(yaw), std::sin(yaw), 0,
+                  -std::sin(yaw), std::cos(yaw), 0,
                   0, 0, 1;
 
-        // Total rotation matrix
-        R =  R_pitch * R_yaw * R_roll;
+        R =  R_x * R_y * R_z;
 
         // Set extrinsic matrix P (without translation part)
         P.setIdentity();
@@ -58,7 +55,7 @@ public:
         double fx = K(0, 0);
         double fy = K(1, 1);
         // Camera height
-        double Height = 88.4570007324;//摄像头安装高度
+        double Height = 100;//摄像头安装高度
 
         // Camera tilt angles
         double angle_a = 75 * 3.1415926 / 180; //摄像头安装角度，俯仰角，向下为正

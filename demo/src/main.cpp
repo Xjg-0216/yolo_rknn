@@ -31,7 +31,7 @@ double haversine(double lat1, double lon1, double lat2, double lon2) {
 int main() {
     // 初始化无人机数据和图像数据
     VectorXd UavData(7); // lat, lon, height, yaw, pitch, roll
-    UavData << 38.1368980408, 116.2943725586, 88.4570007324, 1.827, -0.031, 0.157, 0;
+    UavData << 38.1368980408, 116.2943725586, 100, 0, 0, 0, 0;
     // 
     Vector3d PictureData(533.5, 371.5, 1);
 
