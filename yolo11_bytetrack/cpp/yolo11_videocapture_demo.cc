@@ -17,11 +17,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <sys/time.h>
 #include "yolo11.h"
 #include "image_utils.h"
 #include "file_utils.h"
 #include "BYTETracker.h"
+#include "easy_timer.h"
 #include <opencv2/opencv.hpp>
 
 static const unsigned char colors[19][3] = {
@@ -63,6 +64,7 @@ int main(int argc, char **argv)
     const char *device_path = argv[2];
 
     int ret;
+    TIMER timer;
     cv::Mat frame, image;
     rknn_app_context_t rknn_app_ctx;
     memset(&rknn_app_ctx, 0, sizeof(rknn_app_context_t));
@@ -94,6 +96,7 @@ int main(int argc, char **argv)
     }
 
     init_post_process();
+    
     ret = init_yolo11_model(model_path, &rknn_app_ctx);
     if (ret != 0)
     {
@@ -112,7 +115,7 @@ int main(int argc, char **argv)
         src_image.height = image.rows;
         src_image.format = IMAGE_FORMAT_RGB888;
         src_image.virt_addr = (unsigned char*)image.data;
-
+        timer.tik();
         // rknn推理和处理
         object_detect_result_list od_results;
         ret = inference_yolo11_model(&rknn_app_ctx, &src_image, &od_results);
@@ -121,6 +124,8 @@ int main(int argc, char **argv)
             printf("init_yolo11_model fail! ret=%d\n", ret);
             goto out;
         }
+        timer.tok();
+        timer.print_time("inference_yolo11_model");
 
         // 将检测结果转化为ByteTrack格式
         objects.clear(); // 清空上一帧的对象
