@@ -81,7 +81,7 @@ buildtarget(NAME yolo11_image_demo
 # yolo11_videocapture_demo
 buildtarget(NAME yolo11_videocapture_demo 
     INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} ./bytetrack/include ${LIBTIMER_INCLUDES}
-    SRCS yolo11_videocapture_demo.cc postprocess.cc ${rknpu_yolo11_file} ${BYTETRACK_FILES}
+    SRCS yolo11_videocapture_demo.cc postprocess.cc drone_objlocation.cc ${rknpu_yolo11_file} ${BYTETRACK_FILES}
     DEPS imageutils fileutils ${OpenCV_LIBS} ${LIBRKNNRT} dl
 )
 
@@ -100,7 +100,7 @@ if (NOT (TARGET_SOC STREQUAL "rv1106" OR TARGET_SOC STREQUAL "rv1103" OR TARGET_
     # yolo11_videocapture_demo_zero_copy
     buildtarget(NAME yolo11_videocapture_demo_zero_copy 
         INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} ./bytetrack/include ${LIBTIMER_INCLUDES}
-        SRCS yolo11_videocapture_demo.cc postprocess.cc rknpu2/yolo11_zero_copy.cc ${BYTETRACK_FILES}
+        SRCS yolo11_videocapture_demo.cc postprocess.cc rknpu2/yolo11_zero_copy.cc drone_objlocation.cc ${BYTETRACK_FILES}
         DEPS imageutils fileutils ${OpenCV_LIBS} ${LIBRKNNRT} dl
         DEFS ZERO_COPY
     )

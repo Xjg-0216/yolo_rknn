@@ -28,12 +28,12 @@ static void dump_tensor_attr(rknn_tensor_attr *attr) {
         int idx = strlen(dims);
         sprintf(&dims[idx], "%d%s", attr->dims[i], (i == attr->n_dims - 1) ? "" : ", ");
     }
-    printf("  index=%d, name=%s, n_dims=%d, dims=[%s], n_elems=%d, size=%d, w_stride = %d, size_with_stride = %d, "
-           "fmt=%s, type=%s, qnt_type=%s, "
-           "zp=%d, scale=%f\n",
-           attr->index, attr->name, attr->n_dims, dims, attr->n_elems, attr->size, attr->w_stride, attr->size_with_stride,
-           get_format_string(attr->fmt), get_type_string(attr->type), get_qnt_type_string(attr->qnt_type), attr->zp,
-           attr->scale);
+    // printf("  index=%d, name=%s, n_dims=%d, dims=[%s], n_elems=%d, size=%d, w_stride = %d, size_with_stride = %d, "
+    //        "fmt=%s, type=%s, qnt_type=%s, "
+    //        "zp=%d, scale=%f\n",
+    //        attr->index, attr->name, attr->n_dims, dims, attr->n_elems, attr->size, attr->w_stride, attr->size_with_stride,
+    //        get_format_string(attr->fmt), get_type_string(attr->type), get_qnt_type_string(attr->qnt_type), attr->zp,
+    //        attr->scale);
 }
 
 int init_yolo11_model(const char *model_path, rknn_app_context_t *app_ctx) {
