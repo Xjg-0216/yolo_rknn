@@ -15,20 +15,17 @@ endif()
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 
 # 包含头文件目录
-include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/include
+"/usr/include/eigen3"
+)
 
 # 查找源文件
 set(SOURCES
-    src/main.cpp
-    src/uav_position.cpp
+    src/demo_geolocation.cpp
+    src/drone_objlocation.cpp
 )
 
 # 创建可执行文件
-add_executable(uav_positioning ${SOURCES})
+add_executable(demo_geolocation ${SOURCES})
+target_link_libraries(demo_geolocation ${DroneObjlocation_LIBS})
 
-# 为调试目标添加宏定义
-target_compile_definitions(uav_positioning PRIVATE ENABLE_DEBUG)
-
-# 添加另一个可执行目标
-add_executable(demo src/demo.cpp)
-target_compile_definitions(demo PRIVATE ENABLE_DEBUG)
