@@ -15,8 +15,8 @@
 
 class AAIRReceiver {
 public:
-    AAIRReceiver(const std::string& ip, int port)
-        : udp_ip(ip), udp_port(port), stop_flag(false), sockfd(-1) {}
+    AAIRReceiver(const std::string& ip, int port, const std::string& send_ip, int send_port)
+        : udp_ip(ip), udp_port(port), send_ip(send_ip), send_port(send_port), stop_flag(false), sockfd(-1) {}
 
     ~AAIRReceiver() {
         stop();
@@ -37,17 +37,35 @@ public:
         }
     }
 
-    AAIR getLatestAAIR() {
+    AAIR getCurAAIR() {
         std::lock_guard<std::mutex> lock(aair_mutex);
         return global_aair;
     }
 
+    // 主线程调用，发送 GPS 数据
+    void sendGpsData(float latitude, float longitude, float altitude) {
+        // 构造 GPS 数据
+        std::string gps_data = "GPS: " + std::to_string(latitude) + ", " 
+            + std::to_string(longitude) + ", " + std::to_string(altitude);
+
+        // 发送 GPS 数据
+        ssize_t n = sendto(sockfd, gps_data.c_str(), gps_data.size(), 0, (const struct sockaddr*)&send_addr, sizeof(send_addr));
+        if (n < 0) {
+            std::cerr << "Error sending GPS data: " << strerror(errno) << std::endl;
+        } else {
+            std::cout << "Sent GPS data: " << gps_data << std::endl;
+        }
+    }
+
 private:
-    std::string udp_ip;
-    int udp_port;
+    std::string udp_ip;      // 接收数据的 IP 地址
+    int udp_port;            // 接收数据的端口
+    std::string send_ip;     // 发送数据的目标 IP 地址
+    int send_port;           // 发送数据的目标端口
     std::atomic<bool> stop_flag;
     std::thread receive_thread;
     int sockfd;
+    struct sockaddr_in send_addr;
     AAIR global_aair;
     std::mutex aair_mutex;
 
@@ -64,7 +82,7 @@ private:
         int flags = fcntl(sockfd, F_GETFL, 0);
         fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
 
-        // 配置服务器地址
+        // 配置接收端地址
         struct sockaddr_in server_addr;
         memset(&server_addr, 0, sizeof(server_addr));
         server_addr.sin_family = AF_INET;
@@ -78,6 +96,12 @@ private:
             sockfd = -1;
             return;
         }
+
+        // 配置发送端地址
+        memset(&send_addr, 0, sizeof(send_addr));
+        send_addr.sin_family = AF_INET;
+        send_addr.sin_port = htons(send_port);
+        send_addr.sin_addr.s_addr = inet_addr(send_ip.c_str());
 
         while (!stop_flag) {
             ssize_t n = recvfrom(sockfd, buffer, sizeof(buffer), 0, nullptr, nullptr);

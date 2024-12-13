@@ -1,14 +1,3 @@
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 /*-------------------------------------------
                 Includes
@@ -104,7 +93,7 @@ int main(int argc, char **argv)
     }
 
     // 初始化AAIR接收器
-    AAIRReceiver aair_receiver("192.168.1.19", 12345);
+    AAIRReceiver aair_receiver("192.168.1.19", 12345, "192.168.1.19", 23456); //发送需要添加对应的ip和port
     aair_receiver.start();
 
     //初始化解算类
@@ -120,7 +109,7 @@ int main(int argc, char **argv)
 
 
         // 获取最新的AAIR数据
-        AAIR cur_aair = aair_receiver.getLatestAAIR();
+        AAIR cur_aair = aair_receiver.getCurAAIR();
 
         timer.tik();
         // rknn目标检测
@@ -155,7 +144,7 @@ int main(int argc, char **argv)
             std::map<std::string, std::vector<float>> result;
             result = geo_location.get_target_location(uv, height, euler_camera, euler_drone, position_drone); 
             printf("gps: %f, %f, %f\n", result["gps"][0], result["gps"][1], result["gps"][2]);
-
+            // aair_receiver.sendGpsData(latitude, longitude, altitude);  // 发送 GPS 数据
             // 可视化
             const unsigned char* color = colors[tracked.track_id % 19];
             cv::Scalar cc(color[0], color[1], color[2]);
