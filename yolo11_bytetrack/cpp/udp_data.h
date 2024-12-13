@@ -12,11 +12,20 @@
 #include <unistd.h>
 #include <iostream>
 #include "aair.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 class AAIRReceiver {
 public:
     AAIRReceiver(const std::string& ip, int port, const std::string& send_ip, int send_port)
-        : udp_ip(ip), udp_port(port), send_ip(send_ip), send_port(send_port), stop_flag(false), sockfd(-1) {}
+        : udp_ip(ip), udp_port(port), send_ip(send_ip), send_port(send_port), stop_flag(false), sockfd(-1) {
+
+            // 初始化日志
+            logger = spdlog::basic_logger_mt("aair_logger", "aair_receiver.log");  // 将日志保存到文件 aair_receiver.log
+            logger->set_level(spdlog::level::info);  // 设置日志级别
+            logger->info("AAIRReceiver initialized with IP: {}, Port: {}", udp_ip, udp_port);
+        }
 
     ~AAIRReceiver() {
         stop();
@@ -35,6 +44,7 @@ public:
         if (sockfd != -1) {
             close(sockfd);
         }
+        logger->info("AAIRReceiver stopped");
     }
 
     AAIR getCurAAIR() {
@@ -68,13 +78,14 @@ private:
     struct sockaddr_in send_addr;
     AAIR global_aair;
     std::mutex aair_mutex;
+    std::shared_ptr<spdlog::logger> logger;
 
     void udp_data_thread() {
         char buffer[sizeof(AAIR)];
 
         // 创建UDP套接字
         if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-            std::cerr << "Socket creation failed\n";
+            logger->error("Socket creation failed");
             return;
         }
 
@@ -107,7 +118,7 @@ private:
             ssize_t n = recvfrom(sockfd, buffer, sizeof(buffer), 0, nullptr, nullptr);
             if (n < 0) {
                 if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                    std::cerr << "Error receiving UDP packet: " << strerror(errno) << std::endl;
+                    logger->error("Error receiving UDP packet: {}", strerror(errno));
                     break;
                 }
             } else if (n == sizeof(AAIR)) {
@@ -119,22 +130,17 @@ private:
                     global_aair = received_aair;
                 }
 
-                std::cout << "Received AAIR: Lat=" << received_aair.lat
-                          << ", Lng=" << received_aair.lng
-                          << ", Height=" << received_aair.height
-                          << ", Yaw=" << received_aair.yaw
-                          << ", Pitch=" << received_aair.pitch
-                          << ", Roll=" << received_aair.roll
-                          << ", Angle=" << received_aair.angle
-                          << std::endl;
+                logger->info("Received AAIR: Lat = {}, Lng = {}, Height = {}, Yaw = {}, Pitch = {}, Roll = {}",
+                    received_aair.lat, received_aair.lng, received_aair.height, 
+                    received_aair.yaw, received_aair.pitch, received_aair.roll);
             } else {
-                std::cerr << "Invalid packet size: " << n << " bytes.\n";
+                logger->warn("Invalid packet size: {} bytes", n);
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
 
-        std::cout << "UDP listener stopped." << std::endl;
+        logger->info("UDP listener stopped.");
     }
 };
 
