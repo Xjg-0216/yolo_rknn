@@ -41,17 +41,17 @@ if (ENABLE_ASAN)
 	set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 endif ()
 
-set(rknpu_yolo11_file rknpu2/yolo11.cc)
+# set(rknpu_yolo11_file rknpu2/yolo11.cc)
 
-if (TARGET_SOC STREQUAL "rv1106" OR TARGET_SOC STREQUAL "rv1103")
-    add_definitions(-DRV1106_1103)
-    set(rknpu_yolo11_file rknpu2/yolo11_rv1106_1103.cc)
-endif()
+# if (TARGET_SOC STREQUAL "rv1106" OR TARGET_SOC STREQUAL "rv1103")
+#     add_definitions(-DRV1106_1103)
+#     set(rknpu_yolo11_file rknpu2/yolo11_rv1106_1103.cc)
+# endif()
 
-if(TARGET_SOC STREQUAL "rk1808" OR TARGET_SOC STREQUAL "rv1109" OR TARGET_SOC STREQUAL "rv1126")
-    add_definitions(-DRKNPU1)
-    set(rknpu_yolo11_file rknpu1/yolo11.cc)
-endif()
+# if(TARGET_SOC STREQUAL "rk1808" OR TARGET_SOC STREQUAL "rv1109" OR TARGET_SOC STREQUAL "rv1126")
+#     add_definitions(-DRKNPU1)
+#     set(rknpu_yolo11_file rknpu1/yolo11.cc)
+# endif()
 
 # opencv
 # set(OpenCV_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/opencv/opencv-linux-aarch64/share/OpenCV)
@@ -73,36 +73,36 @@ set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
 file(GLOB SRCS ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 
 
-# yolo11_image_demo
-buildtarget(NAME yolo11_image_demo 
-    INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} 
-    SRCS yolo11_image_demo.cc postprocess.cc ${rknpu_yolo11_file}
-    DEPS imageutils fileutils imagedrawing ${LIBRKNNRT} dl
-)
+# # yolo11_image_demo
+# buildtarget(NAME yolo11_image_demo 
+#     INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} 
+#     SRCS yolo11_image_demo.cc postprocess.cc ${rknpu_yolo11_file}
+#     DEPS imageutils fileutils imagedrawing ${LIBRKNNRT} dl
+# )
 
-# yolo11_videocapture_demo
-buildtarget(NAME yolo11_videocapture_demo 
-    INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} 
-    SRCS yolo11_videocapture_demo.cc postprocess.cc ${rknpu_yolo11_file}
-    DEPS imageutils fileutils ${OpenCV_LIBS} ${LIBRKNNRT} dl
-)
+# # yolo11_videocapture_demo
+# buildtarget(NAME yolo11_videocapture_demo 
+#     INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} 
+#     SRCS yolo11_videocapture_demo.cc postprocess.cc ${rknpu_yolo11_file}
+#     DEPS imageutils fileutils ${OpenCV_LIBS} ${LIBRKNNRT} dl
+# )
 
 # Currently zero copy only supports rknpu2, v1103/rv1103b/rv1106 supports zero copy by default
 if (NOT (TARGET_SOC STREQUAL "rv1106" OR TARGET_SOC STREQUAL "rv1103" OR TARGET_SOC STREQUAL "rk1808" 
     OR TARGET_SOC STREQUAL "rv1109" OR TARGET_SOC STREQUAL "rv1126" OR TARGET_SOC STREQUAL "rv1103b"))
 
-    # yolo11_image_demo_zero_copy
-    buildtarget(NAME yolo11_image_demo_zero_copy 
-        INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} 
-        SRCS yolo11_image_demo.cc postprocess.cc rknpu2/yolo11_zero_copy.cc
-        DEPS imageutils fileutils imagedrawing ${LIBRKNNRT} dl
-        DEFS ZERO_COPY
-    )
+    # # yolo11_image_demo_zero_copy
+    # buildtarget(NAME yolo11_image_demo_zero_copy 
+    #     INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} 
+    #     SRCS yolo11_image_demo.cc postprocess.cc rknpu2/yolo11_zero_copy.cc
+    #     DEPS imageutils fileutils imagedrawing ${LIBRKNNRT} dl
+    #     DEFS ZERO_COPY
+    # )
 
     # yolo11_videocapture_demo_zero_copy
     buildtarget(NAME yolo11_videocapture_demo_zero_copy 
-        INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} 
-        SRCS yolo11_videocapture_demo.cc postprocess.cc rknpu2/yolo11_zero_copy.cc
+        INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} yolo/include
+        SRCS yolo/src/main.cc yolo/src/detector.cc yolo/src/postprocess.cc rknpu2/yolo11_zero_copy.cc
         DEPS imageutils fileutils ${OpenCV_LIBS} ${LIBRKNNRT} dl
         DEFS ZERO_COPY
     )
