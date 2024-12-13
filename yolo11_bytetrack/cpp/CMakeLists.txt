@@ -71,41 +71,18 @@ set(BYTETRACK_FILES
     bytetrack/src/utils.cpp
 )
 
-# yolo11_image_demo
-buildtarget(NAME yolo11_image_demo 
-    INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES}  ${LIBTIMER_INCLUDES}
-    SRCS yolo11_image_demo.cc postprocess.cc ${rknpu_yolo11_file}
-    DEPS imageutils fileutils imagedrawing ${LIBRKNNRT} dl
-)
+set(YOLO_FILES
+    yolo/src/detector.cc
+    yolo/src/postprocess.cc)
 
-# yolo11_videocapture_demo
-buildtarget(NAME yolo11_videocapture_demo 
-    INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} ./bytetrack/include ${LIBTIMER_INCLUDES}
-    SRCS yolo11_videocapture_demo.cc postprocess.cc drone_objlocation.cc ${rknpu_yolo11_file} ${BYTETRACK_FILES}
+# yolo11_videocapture_demo_zero_copy
+buildtarget(NAME yolo11_videocapture_zero_copy 
+    INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} ./yolo/include ./bytetrack/include ${LIBTIMER_INCLUDES}
+    SRCS main.cc rknpu2/yolo11_zero_copy.cc drone_objlocation.cc ${YOLO_FILES} ${BYTETRACK_FILES}
     DEPS imageutils fileutils ${OpenCV_LIBS} ${LIBRKNNRT} dl
+    DEFS ZERO_COPY
 )
 
-# Currently zero copy only supports rknpu2, v1103/rv1103b/rv1106 supports zero copy by default
-if (NOT (TARGET_SOC STREQUAL "rv1106" OR TARGET_SOC STREQUAL "rv1103" OR TARGET_SOC STREQUAL "rk1808" 
-    OR TARGET_SOC STREQUAL "rv1109" OR TARGET_SOC STREQUAL "rv1126" OR TARGET_SOC STREQUAL "rv1103b"))
-
-    # yolo11_image_demo_zero_copy
-    buildtarget(NAME yolo11_image_demo_zero_copy 
-        INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} ${LIBTIMER_INCLUDES}
-        SRCS yolo11_image_demo.cc postprocess.cc rknpu2/yolo11_zero_copy.cc
-        DEPS imageutils fileutils imagedrawing ${LIBRKNNRT} dl
-        DEFS ZERO_COPY
-    )
-
-    # yolo11_videocapture_demo_zero_copy
-    buildtarget(NAME yolo11_videocapture_demo_zero_copy 
-        INCS ${CMAKE_CURRENT_SOURCE_DIR} ${LIBRKNNRT_INCLUDES} ./bytetrack/include ${LIBTIMER_INCLUDES}
-        SRCS yolo11_videocapture_demo.cc postprocess.cc rknpu2/yolo11_zero_copy.cc drone_objlocation.cc ${BYTETRACK_FILES}
-        DEPS imageutils fileutils ${OpenCV_LIBS} ${LIBRKNNRT} dl
-        DEFS ZERO_COPY
-    )
-
-endif()
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../model/GX_0330.jpg DESTINATION model)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../model/coco_80_labels_list.txt DESTINATION model)

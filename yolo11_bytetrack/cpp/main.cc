@@ -32,6 +32,7 @@
 #include "BYTETracker.h"
 #include "easy_timer.h"
 #include "aair.h"
+#include "detector.h"
 #include "drone_objlocation.h"
 #include <opencv2/opencv.hpp>
 
@@ -150,8 +151,8 @@ int main(int argc, char **argv)
     if (argc != 3)
     {
         printf("%s <model path> <camera device id/video path>\n", argv[0]);
-        printf("Usage: %s  yolov10s.rknn  0 \n", argv[0]);
-        printf("Usage: %s  yolov10s.rknn /path/xxxx.mp4\n", argv[0]);
+        printf("Usage: %s  yolov11.rknn  0 \n", argv[0]);
+        printf("Usage: %s  yolov11.rknn /path/xxxx.mp4\n", argv[0]);
         return -1;
     }
 
@@ -161,13 +162,17 @@ int main(int argc, char **argv)
     int ret;
     TIMER timer;
     cv::Mat frame, image;
-    rknn_app_context_t rknn_app_ctx;
-    memset(&rknn_app_ctx, 0, sizeof(rknn_app_context_t));
-    image_buffer_t src_image;
-    memset(&src_image, 0, sizeof(image_buffer_t));
-
     BYTETracker tracker(30, 90);
     std::vector<Object> objects;
+
+    YoloDetector detector;
+
+    ret = detector.init(model_path);
+    if (ret != 0) {
+        printf("init_yolo11_model fail! ret=%d model_path=%s\n", ret, model_path);
+        return -1;
+    }
+
     cv::VideoCapture cap;
     // 摄像头
     if (isdigit(device_path[0])) {
@@ -178,9 +183,6 @@ int main(int argc, char **argv)
             printf("Error: Could not open camera.\n");
             return -1;
         }
-        // cap.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
-        // cap.set(cv::CAP_PROP_FRAME_WIDTH, 1920);    // 设置宽度
-        // cap.set(cv::CAP_PROP_FRAME_HEIGHT, 1080);  // 设置长度
     } else {
         // 视频文件或者其他
         cap.open(argv[2]);
@@ -192,23 +194,9 @@ int main(int argc, char **argv)
 
     // 启动UDP接收线程
     std::thread udp_thread(udp_data_thread, "192.168.1.19", 12345);
-    // try {
-    //     std::thread udp_thread(udp_data_thread, "192.168.1.19", 111);
-    // } catch (const std::system_error& e) {
-    //     std::cerr << "Error: " << e.what() << std::endl;
-    // }
 
     DroneObjlocation geo_location = DroneObjlocation();
     geo_location.set_parameter((uint16_t)640, (uint16_t)480, 640, 640, 300, 240); // img_width, img_height, fx, fy, cx, cy
-
-    init_post_process();
-    
-    ret = init_yolo11_model(model_path, &rknn_app_ctx);
-    if (ret != 0)
-    {
-        printf("init_yolo11_model fail! ret=%d model_path=%s\n", ret, model_path);
-        goto out;
-    }
 
     while(true) 
     {
@@ -224,39 +212,21 @@ int main(int argc, char **argv)
             cur_aair = global_aair;
         }
 
-        cv::cvtColor(frame, image, cv::COLOR_BGR2RGB);
-        src_image.width  = image.cols;
-        src_image.height = image.rows;
-        src_image.format = IMAGE_FORMAT_RGB888;
-        src_image.virt_addr = (unsigned char*)image.data;
         timer.tik();
-        // rknn推理和处理
-        object_detect_result_list od_results;
-        ret = inference_yolo11_model(&rknn_app_ctx, &src_image, &od_results);
-        if (ret != 0)
-        {
-            printf("init_yolo11_model fail! ret=%d\n", ret);
-            goto out;
-        }
-        timer.tok();
-        timer.print_time("inference_yolo11_model");
-
-        // 将检测结果转化为ByteTrack格式
-        objects.clear(); // 清空上一帧的对象
-        for (int i = 0; i < od_results.count; i++) {
-            object_detect_result *det_result = &(od_results.results[i]);
-
-            Object obj;
-            obj.label = det_result->cls_id;
-            obj.prob = det_result->prop;
-            obj.rect = cv::Rect(det_result->box.left, det_result->box.top,
-                               det_result->box.right - det_result->box.left,
-                               det_result->box.bottom - det_result->box.top);
-            objects.push_back(obj);
+        // rknn目标检测
+        ret = detector.infer(frame, objects);
+        if (ret != 0) {
+            printf("inference fail! ret=%d\n", ret);
+            break;
         }
 
         // 调用 ByteTrack 更新跟踪信息
         vector<STrack> tracked_objects = tracker.update(objects);
+
+
+        timer.tok();
+        timer.print_time("yolo11_bytetrack");
+
 
         for (const auto& tracked : tracked_objects) {
 
@@ -285,11 +255,6 @@ int main(int argc, char **argv)
             // sprintf(text, "ID:%d %.1f%%", tracked.track_id, tracked.score * 100);
             sprintf(text, "ID:%d %.1f%% %s", tracked.track_id, tracked.score * 100, coco_cls_to_name(tracked.label));
 
-            // // 使用 tlwh 来绘制框
-            // float x = tracked.tlwh[0];  
-            // float y = tracked.tlwh[1];
-            // float w = tracked.tlwh[2];
-            // float h = tracked.tlwh[3];
             cv::Rect target_rect(x, y, w, h);
 
             cv::rectangle(frame, target_rect, cc, 2);
@@ -308,7 +273,7 @@ int main(int argc, char **argv)
                 cv::putText(frame, text, cv::Point(tx, ty + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255));
             }
 
-        cv::imshow("YOLO11 + ByteTrack Demo", frame);
+        cv::imshow("YOLO11 + ByteTrack", frame);
 
         char c = cv::waitKey(1);
         if (c == 27) { // ESC
@@ -320,19 +285,7 @@ int main(int argc, char **argv)
     stop_flag = true;
     udp_thread.join(); // 等待线程结束
 
-out:
-    deinit_post_process();
-
-    ret = release_yolo11_model(&rknn_app_ctx);
-    if (ret != 0)
-    {
-        printf("release_yolo11_model fail! ret=%d\n", ret);
-    }
-
-    if (src_image.virt_addr != NULL)
-    {
-        free(src_image.virt_addr);
-    }
+    detector.deinit();
 
     return 0;
 }

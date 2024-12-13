@@ -1,6 +1,7 @@
 #ifndef AAIR_H
 #define AAIR_H
 #include <cstdint>
+#include <opencv2/opencv.hpp>
 
 #pragma pack(push, 1)
 struct AAIR {
@@ -19,6 +20,16 @@ struct AAIR {
     float angle;      // 航向角
     uint8_t crc;      // 包校验值固定为0xFF
 };
+
+struct Object
+{
+    cv::Rect_<float> rect;
+    int label;
+    float prob;
+};
+
+
+
 #pragma pack(pop)
 
 #endif // AAIR_H

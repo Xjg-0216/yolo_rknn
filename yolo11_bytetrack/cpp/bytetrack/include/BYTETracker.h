@@ -1,13 +1,14 @@
 #pragma once  //避免头文件重复包含
 
 #include "STrack.h"
+#include "../../aair.h"
 
-struct Object
-{
-    cv::Rect_<float> rect;
-    int label;
-    float prob;
-};
+// struct Object
+// {
+//     cv::Rect_<float> rect;
+//     int label;
+//     float prob;
+// };
 
 class BYTETracker
 {
