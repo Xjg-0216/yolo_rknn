@@ -18,14 +18,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
-#include <thread>
-#include <mutex>
-#include <atomic>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h> 
-#include <unistd.h>
-#include <fcntl.h>
 #include "yolo11.h"
 #include "image_utils.h"
 #include "file_utils.h"
@@ -34,6 +26,7 @@
 #include "aair.h"
 #include "detector.h"
 #include "drone_objlocation.h"
+#include "udp_data.h"
 #include <opencv2/opencv.hpp>
 
 static const unsigned char colors[19][3] = {
@@ -58,88 +51,6 @@ static const unsigned char colors[19][3] = {
     {139, 125, 96}
 };
 
-
-// 全局变量， 用于共享姿态信息
-
-AAIR global_aair;
-std::mutex aair_mutex; //保护共享变量
-
-std::atomic<bool> stop_flag(false); // 用于停止线程的标志
-
-//udp 接收姿态信息
-void udp_data_thread(const std::string& udp_ip, int udp_port)
-{
-
-    int sockfd;
-    struct sockaddr_in server_addr;
-    char buffer[sizeof(AAIR)]; 
-
-    // 创建UDP套接字
-    if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
-    {
-        printf("socket creation failed\n");
-        return;
-    }
-    // 设置套接字为非阻塞模式
-    int flags = fcntl(sockfd, F_GETFL, 0);
-    fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
-
-    //配置服务器地址
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(udp_port);
-    server_addr.sin_addr.s_addr = inet_addr(udp_ip.c_str());
-
-    // 绑定套接字
-    if (bind(sockfd, (const struct sockaddr*)&server_addr, sizeof(server_addr)) <0)
-    {
-        printf("Bind failed\n");
-        close(sockfd);
-        return;
-    }
-
-
-    while (!stop_flag) {
-        // 接收数据
-        ssize_t n = recvfrom(sockfd, buffer, sizeof(buffer), 0, nullptr, nullptr);
-        if (n < 0) {
-            if (errno != EAGAIN && errno != EWOULDBLOCK) {
-                std::cerr << "Error receiving UDP packet: " << strerror(errno) << std::endl;
-                break; // 发生其他错误时退出
-            }
-            // 如果是 EAGAIN 或 EWOULDBLOCK 错误，表示没有数据，继续循环
-        }
-        if (n > 0) {
-            // 校验数据长度
-            if (n == sizeof(AAIR)) {
-                // 解析数据
-                AAIR received_aair;
-                memcpy(&received_aair, buffer, sizeof(AAIR));
-
-                // 更新全局变量
-                std::lock_guard<std::mutex> lock(aair_mutex);
-                global_aair = received_aair;
-
-                std::cout << "Received AAIR: "
-                            << "Lat=" << received_aair.lat
-                            << ", Lng=" << received_aair.lng
-                            << ", Height=" << received_aair.height
-                            << ", Yaw=" << received_aair.yaw
-                            << ", Pitch=" << received_aair.pitch
-                            << ", Roll=" << received_aair.roll
-                            << ", Angle=" << received_aair.angle
-                            << std::endl;
-            } else {
-                std::cerr << "Invalid packet size: " << n << " bytes." << std::endl;
-            }
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10)); // 防止过度轮询
-    }
-
-    close(sockfd);
-    std::cout << "UDP listener stopped." << std::endl;
-
-}
 
 
 
@@ -192,9 +103,11 @@ int main(int argc, char **argv)
         }
     }
 
-    // 启动UDP接收线程
-    std::thread udp_thread(udp_data_thread, "192.168.1.19", 12345);
+    // 初始化AAIR接收器
+    AAIRReceiver aair_receiver("192.168.1.19", 12345);
+    aair_receiver.start();
 
+    //初始化解算类
     DroneObjlocation geo_location = DroneObjlocation();
     geo_location.set_parameter((uint16_t)640, (uint16_t)480, 640, 640, 300, 240); // img_width, img_height, fx, fy, cx, cy
 
@@ -206,11 +119,8 @@ int main(int argc, char **argv)
         }
 
 
-        AAIR cur_aair;
-        {
-            std::lock_guard<std::mutex> lock(aair_mutex);
-            cur_aair = global_aair;
-        }
+        // 获取最新的AAIR数据
+        AAIR cur_aair = aair_receiver.getLatestAAIR();
 
         timer.tik();
         // rknn目标检测
@@ -282,9 +192,7 @@ int main(int argc, char **argv)
 
     }
 
-    stop_flag = true;
-    udp_thread.join(); // 等待线程结束
-
+    aair_receiver.stop();
     detector.deinit();
 
     return 0;
