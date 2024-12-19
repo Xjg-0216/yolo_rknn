@@ -267,7 +267,7 @@ int main(int argc, const char* argv[])
     {
         //指点跟随角度控制       
         ctrlSginal.pitch_angle_signal=i *100; //这个角度值要乘100,转动范围,90->-120
-        // ctrlSginal.yaw_angle_signal=i *100 ; //这个角度值要乘100,转动范围+-60
+        //ctrlSginal.yaw_angle_signal=i *100 ; //这个角度值要乘100,转动范围+-60
         
         int ret = set_ctrl_follow_mode(user_carrier,ctrl_buff, ctrlSginal);
         if(-1!=ret)
