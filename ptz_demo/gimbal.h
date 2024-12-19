@@ -15,7 +15,7 @@ struct ctrl_to_gbc_t {
     uint8_t sync[2];        //同步头:0xA9 0x5B
     struct {
         uint8_t trig:3;     //命令触发计数变化则会重新执行相同命令
-        uint8_t value:4;    //命令码[0:未定义 1:陀螺校准 2:启动云台 3:停止云台 4:手动操控 5:指点平移 6:目标追踪] 这些命令都是发一次，收到云台返回后，清零即可
+        uint8_t value:5;    //命令码[0:未定义 1:陀螺校准 2:启动云台 3:停止云台 4:手动操控 5:指点平移 6:目标追踪] 这些命令都是发一次，收到云台返回后，清零即可
     } cmd;
     struct {
         uint8_t :3;
@@ -114,7 +114,7 @@ public:
 
     uint16_t calculate_crc16(volatile uint8_t* ptr, uint8_t len); 
 
-    int set_ctrl_follow_mode(uint8_t* output_buff); 
+    int set_ctrl_follow_mode(carrier_info_t carrier_info, uint8_t* output_buff,crtl_signal_t ctrl_signal); 
 
     int decode_gbc_data(uint8_t* input_buff, gbc_info_t* gbc_info); 
 

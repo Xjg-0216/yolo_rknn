@@ -4,13 +4,15 @@
 #include <termios.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <cstring>
 #include "gimbal.h"
 
 using namespace std;
 
 GimbalController::GimbalController() {
-    user_carrier = {0};
+    user_carrier = {0};   
     ctrl_signal = {0};
+    memset(gbc_buff, 0, sizeof(gbc_buff)); 
 }
 
     // 串口初始化
@@ -35,11 +37,7 @@ int GimbalController::init_serial()  {
     options.c_cflag &= ~CSTOPB;
     options.c_cc[VTIME]= 0;
     options.c_cc[VMIN] = 0;
-    // tcsetattr(g_usartFd, TCSANOW, &options);  
-    if (tcsetattr(g_usartFd, TCSANOW, &options) != 0) {
-        perror("Error setting terminal attributes");
-        return -1;
-    }
+    tcsetattr(g_usartFd, TCSANOW, &options); 
     return 0;
 }
 
@@ -63,7 +61,7 @@ uint16_t GimbalController::calculate_crc16(volatile uint8_t* ptr, uint8_t len) {
 }
 
 // 控制云台的跟随模式
-int GimbalController::set_ctrl_follow_mode(uint8_t* output_buff) {
+int GimbalController::set_ctrl_follow_mode(carrier_info_t carrier_info, uint8_t* output_buff,crtl_signal_t ctrl_signal) {
 
 
     ctrl_to_gbc_t* ctrl_to_gbc = (ctrl_to_gbc_t*)output_buff;
@@ -96,13 +94,13 @@ int GimbalController::set_ctrl_follow_mode(uint8_t* output_buff) {
     ctrl_to_gbc->gbc[2].op_value= 0;//\ctrl_signal.yaw_angle_signal;
 
 
-    ctrl_to_gbc->uav.valid   = user_carrier.carrier_status;
-    ctrl_to_gbc->uav.angle[0]= user_carrier.carrier_roll*100;
-    ctrl_to_gbc->uav.angle[1]= user_carrier.carrier_pitch*100;
-    ctrl_to_gbc->uav.angle[2]= user_carrier.carrier_psi*100;
-    ctrl_to_gbc->uav.accel[0]= user_carrier.carrier_aacn*100;
-    ctrl_to_gbc->uav.accel[1]= user_carrier.carrier_aace*100;
-    ctrl_to_gbc->uav.accel[2]= user_carrier.carrier_aacu*100;
+    ctrl_to_gbc->uav.valid   = carrier_info.carrier_status;
+    ctrl_to_gbc->uav.angle[0]= carrier_info.carrier_roll*100;
+    ctrl_to_gbc->uav.angle[1]= carrier_info.carrier_pitch*100;
+    ctrl_to_gbc->uav.angle[2]= carrier_info.carrier_psi*100;
+    ctrl_to_gbc->uav.accel[0]= carrier_info.carrier_aacn*100;
+    ctrl_to_gbc->uav.accel[1]= carrier_info.carrier_aace*100;
+    ctrl_to_gbc->uav.accel[2]= carrier_info.carrier_aacu*100;
 
 
     ctrl_to_gbc->cam.vert_fov1x = VERTICAL_VIEW_ANGEL_DEFAULT;
@@ -152,14 +150,14 @@ int GimbalController::send_gimbal_control_command(int pitch, int yaw) {
     //角度控制， 写入ctrl_signal
     ctrl_signal.pitch_angle_signal = pitch * 100;
     // ctrl_signal.yaw_angle_signal = yaw * 100;
-    int ret = set_ctrl_follow_mode(ctrl_buff);
-    if (ret == -1)
+    int ret = set_ctrl_follow_mode(user_carrier, ctrl_buff, ctrl_signal);
+    if (ret != -1)
     {
-        return -1;
-    }
-    else{
         write(g_usartFd, ctrl_buff, sizeof(ctrl_to_gbc_t));
         return 0;
+    }
+    else{
+        return -1;
     }
 
 }
