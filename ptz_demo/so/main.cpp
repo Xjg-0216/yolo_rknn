@@ -266,8 +266,8 @@ int main(int argc, const char* argv[])
     for (;;)
     {
         //指点跟随角度控制       
-        ctrlSginal.pitch_angle_signal=i *100; //这个角度值要乘100,转动范围,90->-120
-        //ctrlSginal.yaw_angle_signal=i *100 ; //这个角度值要乘100,转动范围+-60
+        ctrlSginal.pitch_angle_signal=0 *100; //这个角度值要乘100,转动范围,90->-120
+        ctrlSginal.yaw_angle_signal=0 *100 ; //这个角度值要乘100,转动范围+-60
         
         int ret = set_ctrl_follow_mode(user_carrier,ctrl_buff, ctrlSginal);
         if(-1!=ret)
@@ -275,7 +275,6 @@ int main(int argc, const char* argv[])
             //发送数据
             write(g_usartFd, ctrl_buff, sizeof(ctrl_to_gbc_t));  
         }
-    
         //接收数据
         ret=read(g_usartFd, gbc__buff,sizeof(gbc_to_ctrl_t));  
         if(-1!=ret)
@@ -297,8 +296,8 @@ int main(int argc, const char* argv[])
         sleep(1);
         //usleep(100000); //50Hz
         
-        i=i+10;   
-        if(i>90) i=0;
+        // i=i+10;   
+        if(i>60) i=0;
     }
 }
 
