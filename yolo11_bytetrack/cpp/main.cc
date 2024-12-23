@@ -64,9 +64,13 @@ int main(int argc, char **argv)
     int ret;
     TIMER timer;
     cv::Mat frame, image;
+
+    // BYTETrack跟踪算法初始化
     BYTETracker tracker(30, 90);
     std::vector<Object> objects;
+    
 
+    // yolo 检测算法初始化
     YoloDetector detector;
 
     ret = detector.init(model_path);
@@ -74,6 +78,19 @@ int main(int argc, char **argv)
         logger->error("init_yolo11_model fail! ret={} model_path={}", ret, model_path);
         return -1;
     }
+
+    // 云台初始化
+    GimbalController gimbalController;
+    GimbalCalc gimbalCalc(0.5, 0.1, 0.05, 64.0, 48.0, 640, 480);
+
+    if (gimbalController.init_serial() == -1) {
+        logger->error("串口初始化失败！");
+        return -1;
+    }
+
+    gbc_info_t gbc_info={0};
+
+
 
     cv::VideoCapture cap;
     // 摄像头
@@ -103,8 +120,25 @@ int main(int argc, char **argv)
     DroneObjlocation geo_location = DroneObjlocation();
     geo_location.set_parameter((uint16_t)640, (uint16_t)480, 640, 640, 300, 240); // img_width, img_height, fx, fy, cx, cy
 
+    float pitch = 0; 
+    float yaw = 0;
     while (true) 
     {
+        if (gimbalController.send_gimbal_control_command(pitch, yaw) == -1) {
+            logger->error("云台姿态设置失败！");
+            return -1;
+        }
+        if (gimbalController.read_gimbal_status(&gbc_info) == 0) {
+        // 打印云台状态信息
+        logger->info("固件版本={}, hw_err={}, 倒置标志={}, 云台状态={}",
+                 gbc_info.fw_ver, gbc_info.hw_err, gbc_info.inv_flag, gbc_info.gbc_stat);
+        float pitch_mtr = gbc_info.mtr_angl[0] * 0.01;
+        float yaw_mtr = gbc_info.mtr_angl[1] * 0.01;
+        logger->info("pitch={:.1f}, yaw={:.1f}", pitch_mtr, yaw_mtr);
+        } else {
+            logger->error("读取云台状态失败！");
+            return -1;
+        }
         if (!cap.read(frame)) {  
             logger->error("Error: Could not read frame from the camera or video");
             break;
@@ -138,7 +172,7 @@ int main(int argc, char **argv)
             // 位置解算
             std::map<std::string, std::vector<float>> res;
             std::vector<float> uv = {x + w, y + h};
-            std::vector<float> euler_camera = {0.0, 1.309, 0.0};
+            std::vector<float> euler_camera = {yaw_mtr, pitch_mtr, 0.0};
             float height = cur_aair.height;
             std::vector<float> euler_drone = {cur_aair.roll, cur_aair.pitch, cur_aair.yaw};
             std::vector<float> position_drone = {cur_aair.lat, cur_aair.lng};
@@ -179,6 +213,18 @@ int main(int argc, char **argv)
         if (c == 27) { // ESC
             break;
         }
+
+        // 设置新的云台的角度
+        float deltaYaw, deltaPitch;
+        gimbalControl.calculate_angle_offset(targetX, targetY, deltaYaw, deltaPitch);
+
+        float dt = 0.1; // 时间间隔 100ms
+        gimbalControl.calculate_pid_control(deltaPitch, deltaYaw, dt, pitch, yaw);
+
+        // 打印PID计算结果
+        printf("Pitch Command: %f, Yaw Command: %f\n", pitch, yaw);
+
+
     }
 
     // 停止接收器并清理资源

@@ -144,10 +144,10 @@ int GimbalController::decode_gbc_data(uint8_t* input_buff, gbc_info_t* gbc_info)
 }
 
 // 向云台发送控制
-int GimbalController::send_gimbal_control_command(int pitch, int yaw) {
+int GimbalController::send_gimbal_control_command(float pitch, float yaw) {
     //角度控制， 写入ctrl_signal
-    ctrl_signal.pitch_angle_signal = pitch * 100;
-    ctrl_signal.yaw_angle_signal = yaw * 100;
+    ctrl_signal.pitch_angle_signal =  static_cast<int>(pitch * 100);
+    ctrl_signal.yaw_angle_signal =  static_cast<int>(yaw * 100);
     int ret = set_ctrl_follow_mode(user_carrier, ctrl_buff, ctrl_signal);
     if (ret != -1)
     {
@@ -184,5 +184,46 @@ GimbalController::~GimbalController() {
         printf("串口已关闭。\n");
     }
 }
+
+/////////////////////////////
+
+// 构造函数
+GimbalCalc::GimbalCalc(float kp, float ki, float kd, float fov_h, float fov_v, int image_width, int image_height)
+    : kp(kp), ki(ki), kd(kd), 
+      prev_pitch_error(0.0), prev_yaw_error(0.0),
+      pitch_integral(0.0), yaw_integral(0.0),
+      fov_h(fov_h), fov_v(fov_v), 
+      image_width(image_width), image_height(image_height) {}
+
+// 计算角度偏差
+void GimbalCalc::calculate_angle_offset(int targetX, int targetY, float& deltaYaw, float& deltaPitch) {
+    int centerX = image_width / 2;
+    int centerY = image_height / 2;
+
+    int deltaX = targetX - centerX;
+    int deltaY = targetY - centerY;
+
+    deltaYaw = deltaX * (fov_h / image_width);
+    deltaPitch = -deltaY * (fov_v / image_height);
+}
+
+// 使用 PID 控制计算平滑调整量
+void GimbalCalc::calculate_pid_control(float deltaPitch, float deltaYaw, float dt, float& pitchCommand, float& yawCommand) {
+    // Pitch PID 计算
+    pitch_integral += deltaPitch * dt;
+    float pitch_derivative = (deltaPitch - prev_pitch_error) / dt;
+    pitchCommand = kp * deltaPitch + ki * pitch_integral + kd * pitch_derivative;
+    prev_pitch_error = deltaPitch;
+
+    // Yaw PID 计算
+    yaw_integral += deltaYaw * dt;
+    float yaw_derivative = (deltaYaw - prev_yaw_error) / dt;
+    yawCommand = kp * deltaYaw + ki * yaw_integral + kd * yaw_derivative;
+    prev_yaw_error = deltaYaw;
+}
+
+
+
+
 
 

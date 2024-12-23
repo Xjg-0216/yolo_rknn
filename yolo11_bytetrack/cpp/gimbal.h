@@ -118,9 +118,33 @@ public:
 
     int decode_gbc_data(uint8_t* input_buff, gbc_info_t* gbc_info); 
 
-    int send_gimbal_control_command(int pitch, int yaw); 
+    int send_gimbal_control_command(float pitch, float yaw); 
 
     int read_gimbal_status(gbc_info_t* gbc_info); 
 };
+
+
+class GimbalCalc {
+private:
+    float kp, ki, kd; // PID 参数
+    float prev_pitch_error, prev_yaw_error; // 上一次的偏差
+    float pitch_integral, yaw_integral; // 积分项
+    const float fov_h; // 水平方向视场角
+    const float fov_v; // 垂直方向视场角
+    const int image_width; // 图像宽度
+    const int image_height; // 图像高度
+
+public:
+    // 构造函数
+    GimbalCalc(float kp, float ki, float kd, float fov_h, float fov_v, int image_width, int image_height);
+
+    // 计算角度偏差
+    void calculate_angle_offset(int targetX, int targetY, float& deltaYaw, float& deltaPitch);
+
+    // 使用 PID 控制计算平滑调整量
+    void calculate_pid_control(float deltaPitch, float deltaYaw, float dt, float& pitchCommand, float& yawCommand);
+};
+
+
 
 #endif // GIMBAL_CONTROLLER_H
