@@ -55,29 +55,23 @@ int YoloDetector::infer(cv::Mat& frame, std::vector<Object>& objects) {
     return 0;
 }
 
-void YoloDetector::drawDetection(cv::Mat& frame, object_detect_result_list& od_results) {
-    int color_index = 0;
+void YoloDetector::drawDetection(cv::Mat& frame, const STrack& tracked) {
+    const unsigned char* color = colors[tracked.track_id % 19];
+    cv::Scalar cc(color[0], color[1], color[2]);
     char text[256];
-    for (int i = 0; i < od_results.count; i++) {
-        const unsigned char* color = colors[color_index % 19];
-        cv::Scalar cc(color[0], color[1], color[2]);
-        color_index++;
+    sprintf(text, "ID:%d %.1f%% %s", tracked.track_id, tracked.score * 100, coco_cls_to_name(tracked.label));
 
-        object_detect_result* det_result = &(od_results.results[i]);
-        sprintf(text, "%s %.1f%%", coco_cls_to_name(det_result->cls_id), det_result->prop * 100);
 
-        cv::rectangle(frame, cv::Rect(cv::Point(det_result->box.left, det_result->box.top),
-                                     cv::Point(det_result->box.right, det_result->box.bottom)), cc, 2);
+    cv::rectangle(frame, cv::Rect(tracked.tlwh[0], tracked.tlwh[1], tracked.tlwh[2], tracked.tlwh[3]), cc, 2);
 
-        int baseLine = 0;
-        cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
+    int baseLine = 0;
+    cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
 
-        int x = det_result->box.left;
-        int y = det_result->box.top - label_size.height - baseLine;
-        if (y < 0) y = 0;
-        if (x + label_size.width > frame.cols) x = frame.cols - label_size.width;
+    int x = tracked.tlwh[0];
+    int y = tracked.tlwh[1] - label_size.height - baseLine;
+    if (y < 0) y = 0;
+    if (x + label_size.width > frame.cols) x = frame.cols - label_size.width;
 
-        cv::rectangle(frame, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)), cc, -1);
-        cv::putText(frame, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255));
-    }
+    cv::rectangle(frame, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)), cc, -1);
+    cv::putText(frame, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255));
 }

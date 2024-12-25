@@ -6,7 +6,7 @@
 #include "image_utils.h"
 #include "file_utils.h"
 #include "../../aair.h"
-
+#include "../../bytetrack/include/STrack.h"
 // struct Object
 // {
 //     cv::Rect_<float> rect;
@@ -30,7 +30,7 @@ public:
     int infer(cv::Mat& frame, std::vector<Object>& objects);
 
     // 绘制检测框
-    void drawDetection(cv::Mat& frame, object_detect_result_list& od_results);
+    void drawDetection(cv::Mat& frame, const STrack& tracked);
 
 private:
     rknn_app_context_t rknn_app_ctx;
