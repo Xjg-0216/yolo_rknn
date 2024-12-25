@@ -9,12 +9,6 @@ target_include_directories(fileutils PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_library(imagedrawing STATIC
-    image_drawing.c
-)
-target_include_directories(imagedrawing PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
 
 if(DISABLE_RGA AND NOT (TARGET_SOC STREQUAL "rv1106" OR TARGET_SOC STREQUAL "rv1103" OR TARGET_SOC STREQUAL "rv1103b"))
     add_definitions(-DDISABLE_RGA)
@@ -43,15 +37,3 @@ target_include_directories(imageutils PUBLIC
     ${LIBRGA_INCLUDES}
 )
 
-add_library(audioutils STATIC
-    audio_utils.c
-)
-
-target_link_libraries(audioutils
-    ${LIBSNDFILE}
-)
-
-target_include_directories(audioutils PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${LIBSNDFILE_INCLUDES}
-)

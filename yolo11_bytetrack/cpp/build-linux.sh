@@ -31,18 +31,23 @@ while getopts ":t:b:dmr" opt; do
   esac
 done
 
+# if [ -z ${TARGET_SOC} ] ; then
+#   echo "$0 -t <target> "
+#   echo ""
+#   echo "    -t : target (rk356x/rk3588/rk3576)"
+#   echo "    -r : disable rga, use cpu resize image"
+#   echo "    -b : build_type(Debug/Release)"
+#   echo "    -m : enable address sanitizer, build_type need set to Debug"
+#   echo "such as: $0 -t rk3588 "
+#   echo "such as: $0 -t rk3588 -b Debug -m"
+#   echo ""
+#   exit -1
+# fi
+
 if [ -z ${TARGET_SOC} ] ; then
-  echo "$0 -t <target> "
-  echo ""
-  echo "    -t : target (rk356x/rk3588/rk3576)"
-  echo "    -r : disable rga, use cpu resize image"
-  echo "    -b : build_type(Debug/Release)"
-  echo "    -m : enable address sanitizer, build_type need set to Debug"
-  echo "such as: $0 -t rk3588 "
-  echo "such as: $0 -t rk3588 -b Debug -m"
-  echo ""
-  exit -1
+  TARGET_SOC="rk3588"
 fi
+
 
 case ${TARGET_SOC} in
     rk356x)
