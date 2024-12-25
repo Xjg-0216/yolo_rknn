@@ -20,6 +20,8 @@
 #include "drone_objlocation.h"
 #include "udp_data.h"
 
+// #define GIMBAL_ENABLED  // 云台相关代码使能开关，注释禁用
+
 static const unsigned char colors[19][3] = {
     {54, 67, 244}, {99, 30, 233}, {176, 39, 156}, {183, 58, 103}, {181, 81, 63},
     {243, 150, 33}, {244, 169, 3}, {212, 188, 0}, {136, 150, 0}, {80, 175, 76},
@@ -44,14 +46,14 @@ int main(int argc, char **argv)
     const char *device_path = argv[2];
 
     // 创建日志文件和控制台输出的sink
-    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/application_log.txt", true);
+    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/track_log.txt", true);
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     
     // 合并两个sink
     std::vector<spdlog::sink_ptr> sinks = {file_sink, console_sink};
     
     // 创建logger并指定使用两个sinks
-    auto logger = std::make_shared<spdlog::logger>("multi_sink_logger", sinks.begin(), sinks.end());
+    auto logger = std::make_shared<spdlog::logger>("main_stream_logger", sinks.begin(), sinks.end());
     
     // 设置日志级别
     logger->set_level(spdlog::level::info);
@@ -65,11 +67,6 @@ int main(int argc, char **argv)
     TIMER timer;
     cv::Mat frame, image;
 
-    // BYTETrack跟踪算法初始化
-    BYTETracker tracker(30, 90);
-    std::vector<Object> objects;
-    
-
     // yolo 检测算法初始化
     YoloDetector detector;
 
@@ -79,16 +76,23 @@ int main(int argc, char **argv)
         return -1;
     }
 
+    // BYTETrack跟踪算法初始化
+    BYTETracker tracker(30, 90);
+    std::vector<Object> objects;
+    
+
     // 云台初始化
-    GimbalController gimbalController;
-    GimbalCalc gimbalCalc(0.5, 0.1, 0.05, 64.0, 48.0, 640, 480);
+    #ifdef GIMBAL_ENABLED
+        GimbalController gimbalController;
+        GimbalCalc gimbalCalc(0.5, 0.1, 0.05, 64.0, 48.0, 640, 480);
 
-    if (gimbalController.init_serial() == -1) {
-        logger->error("串口初始化失败！");
-        return -1;
-    }
+        if (gimbalController.init_serial() == -1) {
+            logger->error("串口初始化失败！");
+            return -1;
+        }
 
-    gbc_info_t gbc_info={0};
+        gbc_info_t gbc_info={0};
+    #endif
 
 
 
@@ -111,7 +115,7 @@ int main(int argc, char **argv)
         }
     }
 
-    // 初始化AAIR接收器
+    // 初始化AAIR接收器， 第一个ip和port是接收的， 第二个ip和Port是发送的
     AAIRReceiver aair_receiver("192.168.1.19", 12345, "192.168.1.19", 23456);
     aair_receiver.start();
     logger->info("AAIRReceiver started with IP 192.168.1.19");
@@ -124,28 +128,37 @@ int main(int argc, char **argv)
     float yaw = 0;
     while (true) 
     {
-        if (gimbalController.send_gimbal_control_command(pitch, yaw) == -1) {
-            logger->error("云台姿态设置失败！");
-            return -1;
-        }
-        if (gimbalController.read_gimbal_status(&gbc_info) == 0) {
-        // 打印云台状态信息
-        logger->info("固件版本={}, hw_err={}, 倒置标志={}, 云台状态={}",
-                 gbc_info.fw_ver, gbc_info.hw_err, gbc_info.inv_flag, gbc_info.gbc_stat);
-        float pitch_mtr = gbc_info.mtr_angl[0] * 0.01;
-        float yaw_mtr = gbc_info.mtr_angl[1] * 0.01;
-        logger->info("pitch={:.1f}, yaw={:.1f}", pitch_mtr, yaw_mtr);
-        } else {
-            logger->error("读取云台状态失败！");
-            return -1;
-        }
+        #ifdef GIMBAL_ENABLED
+            if (gimbalController.send_gimbal_control_command(pitch, yaw) == -1) {
+                logger->error("云台姿态设置失败！");
+                return -1;
+            }
+            if (gimbalController.read_gimbal_status(&gbc_info) == 0) {
+            // 打印云台状态信息
+            logger->info("固件版本={}, hw_err={}, 倒置标志={}, 云台状态={}",
+                    gbc_info.fw_ver, gbc_info.hw_err, gbc_info.inv_flag, gbc_info.gbc_stat);
+            float pitch_mtr = gbc_info.mtr_angl[0] * 0.01;
+            float yaw_mtr = gbc_info.mtr_angl[1] * 0.01;
+            logger->info("pitch={:.1f}, yaw={:.1f}", pitch_mtr, yaw_mtr);
+            } else {
+                logger->error("读取云台状态失败！");
+                return -1;
+            }
+        #endif
+
         if (!cap.read(frame)) {  
             logger->error("Error: Could not read frame from the camera or video");
             break;
         }
 
         // 获取最新的AAIR数据
-        AAIR cur_aair = aair_receiver.getCurAAIR();
+        bool is_updated;
+        AAIR cur_aair = aair_receiver.getCurAAIR(is_updated);
+        if (!is_updated)
+        {
+           logger->info("Waiting for udp data...");
+           continue; 
+        }
 
         timer.tik();
         ret = detector.infer(frame, objects);
@@ -172,7 +185,11 @@ int main(int argc, char **argv)
             // 位置解算
             std::map<std::string, std::vector<float>> res;
             std::vector<float> uv = {x + w, y + h};
-            std::vector<float> euler_camera = {yaw_mtr, pitch_mtr, 0.0};
+            #ifdef GIMBAL_ENABLED
+                std::vector<float> euler_camera = {yaw_mtr, pitch_mtr, 0.0};
+            #else 
+                std::vector<float> euler_camera = {0.0, 1.309, 0.0};
+            #endif
             float height = cur_aair.height;
             std::vector<float> euler_drone = {cur_aair.roll, cur_aair.pitch, cur_aair.yaw};
             std::vector<float> position_drone = {cur_aair.lat, cur_aair.lng};
@@ -183,6 +200,21 @@ int main(int argc, char **argv)
             logger->info("GPS Coordinates: Latitude: {:.6f}, Longitude: {:.6f}, Altitude: {:.2f}",
                          result["gps"][0], result["gps"][1], result["gps"][2]);
             // aair_receiver.sendGpsData(latitude, longitude, altitude);  // 发送 GPS 数据
+
+
+            // 调整攻击姿态
+
+            // input: 当前姿态， 目标位置， 
+
+
+
+
+
+
+
+
+
+
             // 可视化
             const unsigned char* color = colors[tracked.track_id % 19];
             cv::Scalar cc(color[0], color[1], color[2]);
@@ -214,15 +246,17 @@ int main(int argc, char **argv)
             break;
         }
 
-        // 设置新的云台的角度
-        float deltaYaw, deltaPitch;
-        gimbalControl.calculate_angle_offset(targetX, targetY, deltaYaw, deltaPitch);
+        #ifdef GIMBAL_ENABLED
+            // 计算新的云台的角度
+            float deltaYaw, deltaPitch;
+            gimbalControl.calculate_angle_offset(targetX, targetY, deltaYaw, deltaPitch);
 
-        float dt = 0.1; // 时间间隔 100ms
-        gimbalControl.calculate_pid_control(deltaPitch, deltaYaw, dt, pitch, yaw);
+            float dt = 0.1; // 时间间隔 100ms
+            gimbalControl.calculate_pid_control(deltaPitch, deltaYaw, dt, pitch, yaw);
 
-        // 打印PID计算结果
-        printf("Pitch Command: %f, Yaw Command: %f\n", pitch, yaw);
+            // 打印PID计算结果
+            printf("Pitch Command: %f, Yaw Command: %f\n", pitch, yaw);
+        #endif
 
 
     }

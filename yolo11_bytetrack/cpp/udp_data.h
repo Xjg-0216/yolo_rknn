@@ -19,10 +19,10 @@
 class AAIRReceiver {
 public:
     AAIRReceiver(const std::string& ip, int port, const std::string& send_ip, int send_port)
-        : udp_ip(ip), udp_port(port), send_ip(send_ip), send_port(send_port), stop_flag(false), sockfd(-1) {
+        : udp_ip(ip), udp_port(port), send_ip(send_ip), send_port(send_port), stop_flag(false), sockfd(-1){
 
             // 初始化日志
-            logger = spdlog::basic_logger_mt("aair_logger", "aair_receiver.log");  // 将日志保存到文件 aair_receiver.log
+            logger = spdlog::basic_logger_mt("aair_logger", "logs/aair_log.txt");  // 将日志保存到文件 aair_receiver.log
             logger->set_level(spdlog::level::info);  // 设置日志级别
             logger->info("AAIRReceiver initialized with IP: {}, Port: {}", udp_ip, udp_port);
         }
@@ -47,8 +47,10 @@ public:
         logger->info("AAIRReceiver stopped");
     }
 
-    AAIR getCurAAIR() {
+    AAIR getCurAAIR(bool& is_updated) {
         std::lock_guard<std::mutex> lock(aair_mutex);
+        auto now = std::chrono::steady_clock::now();
+        is_updated = (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_update_time).count() <= 150);
         return global_aair;
     }
 
@@ -79,6 +81,7 @@ private:
     AAIR global_aair;
     std::mutex aair_mutex;
     std::shared_ptr<spdlog::logger> logger;
+    std::chrono::steady_clock::time_point last_update_time;
 
     void udp_data_thread() {
         char buffer[sizeof(AAIR)];
@@ -128,6 +131,7 @@ private:
                 {
                     std::lock_guard<std::mutex> lock(aair_mutex);
                     global_aair = received_aair;
+                    last_update_time = std::chrono::steady_clock::now(); // 更新时间戳
                 }
 
                 logger->info("Received AAIR: Lat = {}, Lng = {}, Height = {}, Yaw = {}, Pitch = {}, Roll = {}",
