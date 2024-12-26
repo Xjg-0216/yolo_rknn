@@ -11,7 +11,7 @@
 Eigen::Vector3d PixToDirection(double box_x, double box_y, double img_width, double img_height, double fx, double fy) {
     double dx = (box_x - img_width / 2) / fx;
     double dy = (box_y - img_height / 2) / fy;
-    return Eigen::Vector3d(dx, dy, 1.0).normalized();
+    return Eigen::Vector3d(dx, dy, 1).normalized();
 }
 
 // 欧拉角转旋转矩阵
@@ -35,8 +35,8 @@ std::pair<double, double> CalculateViewAngle(Eigen::Vector3d pix_dir, double t_a
     Eigen::Vector3d ned_dir = R_NED_BODY * R_BODY_CAM * pix_dir;
 
     // Step 4: 计算与NED视线偏角
-    double tx = std::atan2(ned_dir.y(), ned_dir.z()); // 水平偏角
-    double ty = std::atan2(-ned_dir.x(), ned_dir.z()); // 垂直偏角
+    double tx = std::atan2(ned_dir.x(), ned_dir.z()); // 水平偏角
+    double ty = std::atan2(-ned_dir.y(), ned_dir.z()); // 垂直偏角
 
     return {tx, ty};
 }
@@ -45,7 +45,7 @@ int main() {
     // 参数
     double img_width = 640, img_height = 480;
     double fx = 640, fy = 480;
-    double box_x = 400, box_y = 240; // 像素坐标
+    double box_x = 320, box_y = 240; // 像素坐标
     double t_az_pitch = -15;         // 相机安装偏角
     double roll = 5, pitch = -10, yaw = 30; // 无人机姿态
 
