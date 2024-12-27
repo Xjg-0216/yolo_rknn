@@ -90,8 +90,8 @@ int main(int argc, char **argv)
 
 
     cv::VideoCapture cap(device_path, cv::CAP_V4L2);
-    cap.set(cv::CAP_PROP_FRAME_WIDTH, 1920);
-    cap.set(cv::CAP_PROP_FRAME_HEIGHT, 1080);
+    cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
+    cap.set(cv::CAP_PROP_FRAME_HEIGHT, 640);
     cap.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('N', 'V', '1', '2'));
     // 摄像头
 
@@ -206,10 +206,11 @@ int main(int argc, char **argv)
 
             detector.drawDetection(frame, tracked);
         }
-        cv::Mat resized_frame;
-        cv::resize(frame, resized_frame, cv::Size(frame.cols / 2, frame.rows / 2));
-        
-        cv::imshow("YOLO11 + ByteTrack", resized_frame);
+        // cv::Mat resized_frame;
+        // cv::resize(frame, resized_frame, cv::Size(frame.cols / 2, frame.rows / 2));
+        cv::Mat frame_bgr;
+        cv::cvtColor(frame, frame_bgr, cv::COLOR_RGB2BGR);
+        cv::imshow("YOLO11 + ByteTrack", frame_bgr);
 
         char c = cv::waitKey(1);
         if (c == 27) { // ESC

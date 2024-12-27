@@ -29,13 +29,13 @@ void YoloDetector::deinit() {
 }
 
 int YoloDetector::infer(cv::Mat& frame, std::vector<Object>& objects) {
-    cv::Mat image;
-    cv::cvtColor(frame, image, cv::COLOR_BGR2RGB);
+    // cv::Mat image;
+    // cv::cvtColor(frame, image, cv::COLOR_BGR2RGB);
 
-    src_image.width = image.cols;
-    src_image.height = image.rows;
+    src_image.width = frame.cols;
+    src_image.height = frame.rows;
     src_image.format = IMAGE_FORMAT_RGB888;
-    src_image.virt_addr = (unsigned char*)image.data;
+    src_image.virt_addr = (unsigned char*)frame.data;
     object_detect_result_list od_results;
     int ret =  inference_yolo11_model(&rknn_app_ctx, &src_image, &od_results);
     // 将检测结果转换为ByteTrack格式
