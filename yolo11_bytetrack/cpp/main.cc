@@ -28,16 +28,15 @@
 -------------------------------------------*/
 int main(int argc, char **argv)
 {
-    if (argc != 3)
+    if (argc != 2)
     {
-        printf("%s <model path> <camera device id/video path>\n", argv[0]);
-        printf("Usage: %s yolov11.rknn 0\n", argv[0]);
-        printf("Usage: %s yolov11.rknn /path/xxxx.mp4\n", argv[0]);
+        printf("%s <model path>\n", argv[0]);
+
         return -1;
     }
 
     const char *model_path = argv[1];
-    const char *device_path = argv[2];
+    const char *device_path = "/dev/video22";
 
 
 
@@ -90,24 +89,17 @@ int main(int argc, char **argv)
     #endif
 
 
-    cv::VideoCapture cap;
+    cv::VideoCapture cap(device_path, cv::CAP_V4L2);
+    cap.set(cv::CAP_PROP_FRAME_WIDTH, 1920);
+    cap.set(cv::CAP_PROP_FRAME_HEIGHT, 1080);
+    cap.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('N', 'V', '1', '2'));
     // 摄像头
-    if (isdigit(device_path[0])) {
-        int camera_id = atoi(argv[2]);
-        cap.open(camera_id);
-        if (!cap.isOpened()) {
-            logger->error("Error: Could not open camera. Camera ID: {}", camera_id);
-            return -1;
-        }
-    } else {
-        // 视频文件或者其他
-        cap.open(argv[2]);
-        if (!cap.isOpened()) {  
 
-            logger->error("Error: Could not open video file. Path: {}", device_path);
-            return -1;
-        }
+    if (!cap.isOpened()) {
+        logger->error("Error: Could not open camera.");
+        return -1;
     }
+
 
     // 初始化AAIR接收器， 第一个ip和port是接收的， 第二个ip和Port是发送的
     AAIRReceiver aair_receiver("192.168.1.19", 12345, "192.168.1.19", 23456);
@@ -214,8 +206,10 @@ int main(int argc, char **argv)
 
             detector.drawDetection(frame, tracked);
         }
+        cv::Mat resized_frame;
+        cv::resize(frame, resized_frame, cv::Size(frame.cols / 2, frame.rows / 2));
         
-        cv::imshow("YOLO11 + ByteTrack", frame);
+        cv::imshow("YOLO11 + ByteTrack", resized_frame);
 
         char c = cv::waitKey(1);
         if (c == 27) { // ESC
